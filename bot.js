@@ -9,38 +9,27 @@ client.on('ready', () => {
 	const channel = guild.channels.get('601663877335482389');
 	if (!channel) return;
 	// test
-	sched.scheduleJob('1 * * * *', () => {
-		channel.send('@everyone Kingdom Events (test) in 5 minutes.');
-	});
+	// sched.scheduleJob('*/1 * * * *', () => {
+	// 	channel.send('@everyone Kingdom Events (test) in 5 minutes.');
+	// });
 
 	//KE at 10:00
-	sched.scheduleJob('* 11 * * *', () => {
-		channel.send('@everyone Kingdom Events (10:00) in 5 minutes.');
+	sched.scheduleJob('55 10,12,14,16,18,22 * * *', () => {
+		channel.send('@everyone Kingdom Events in 5 minutes.');
 	});
-	//KE at 12:00
-	sched.scheduleJob('* 13 * * *', () => {
-		channel.send('@everyone Kingdom Events (12:00) in 5 minutes.');
+
+	//guildwar
+	sched.scheduleJob('30 20 * * 2,4', () => {
+		channel.send('@everyone Assemble! Guildwar in 30 minutes!');
 	});
-	//KE at 14:00
-	sched.scheduleJob('* 15 * * *', () => {
-		channel.send('@everyone Kingdom Events (14:00) in 5 minutes.');
-	});
-	//KE at 16:00
-	sched.scheduleJob('* 17 * * *', () => {
-		channel.send('@everyone Kingdom Events (16:00) in 5 minutes.');
-	});
-	//KE at 18:00
-	sched.scheduleJob('* 19 * * *', () => {
-		channel.send('@everyone Kingdom Events (18:00) in 5 minutes.');
-	});
-	//KE at 22:00
-	sched.scheduleJob('* 23 * * *', () => {
-		channel.send('@everyone Kingdom Events (22:00) in 5 minutes.');
+
+	sched.scheduleJob('55 20 * * 2,4', () => {
+		channel.send('@everyone Guildwar in 5 minutes!');
 	});
 });
 
 client.on('message', (msg) => {
-	if (msg.content === 'ping') {
+	if (msg.content === '!ping') {
 		msg.reply('pong!');
 	}
 });
