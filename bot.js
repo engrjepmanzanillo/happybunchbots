@@ -17,8 +17,10 @@ app.listen(PORT, () => {
 
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
-	const guild = client.guilds.get('601663719650623498');
-	const channel = guild.channels.get('601663877335482389');
+	//const guild = client.guilds.get('601663719650623498');
+	const hbguild = client.guilds.get('591183932309897227');
+	const gwchannel = hbguild.channels.get('593832445481058319');
+	const channel = hbguild.channels.get('595103524795449346');
 	if (!channel) return;
 	// test
 	// sched.scheduleJob('*/1 * * * *', () => {
@@ -34,13 +36,13 @@ client.on('ready', () => {
 
 	//guildwar
 	sched.scheduleJob('30 20 * * 2,4', () => {
-		channel.send('@everyone Assemble! Guildwar in 30 minutes!').then((sentMessage) => {
+		gwchannel.send('@everyone Assemble! Guildwar in 30 minutes!').then((sentMessage) => {
 			sentMessage.delete(1500000);
 		});
 	});
 
 	sched.scheduleJob('55 20 * * 2,4', () => {
-		channel.send('@everyone Guildwar is in 5 minutes!').then((sentMessage) => {
+		gwchannel.send('@everyone Guildwar is in 5 minutes!').then((sentMessage) => {
 			sentMessage.delete(150000);
 		});
 	});
