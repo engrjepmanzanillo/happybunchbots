@@ -38,7 +38,7 @@ client.on('message', (msg) => {
 	}
 	const now = Date();
 	if (msg.content === '!time') {
-		msg.reply(`${now.getHours()}:${now.getMinutes}`);
+		msg.reply(`${now.getHours()}:${now.getMinutes()}`);
 	}
 });
 
