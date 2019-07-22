@@ -21,7 +21,6 @@ client.on('ready', () => {
 	const hbguild = client.guilds.get('591183932309897227');
 	const gwchannel = hbguild.channels.get('593832445481058319');
 	const channel = hbguild.channels.get('602848535456514049');
-	if (!channel) return;
 	// test
 	// sched.scheduleJob('*/1 * * * *', () => {
 	// 	channel.send('@everyone Kingdom Events (test) in 5 minutes.');
@@ -29,22 +28,16 @@ client.on('ready', () => {
 
 	//KE at 10:00
 	sched.scheduleJob('55 10,12,14,16,18,22 * * *', () => {
-		channel.send('@everyone Kingdom Events in 5 minutes.').then((sentMessage) => {
-			sentMessage.delete(300000);
-		});
+		channel.send('@everyone Kingdom Events in 5 minutes.');
 	});
 
 	//guildwar
 	sched.scheduleJob('30 20 * * 2,4', () => {
-		gwchannel.send('@everyone Assemble! Guildwar in 30 minutes!').then((sentMessage) => {
-			sentMessage.delete(1500000);
-		});
+		gwchannel.send('@everyone Assemble! Guildwar in 30 minutes!');
 	});
 
 	sched.scheduleJob('55 20 * * 2,4', () => {
-		gwchannel.send('@everyone Guildwar is in 5 minutes!').then((sentMessage) => {
-			sentMessage.delete(150000);
-		});
+		gwchannel.send('@everyone Guildwar is in 5 minutes!');
 	});
 
 	// guild ball
