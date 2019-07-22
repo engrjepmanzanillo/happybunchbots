@@ -26,6 +26,10 @@ client.on('ready', () => {
 	sched.scheduleJob('55 20 * * 2,4', () => {
 		channel.send('@everyone Guildwar in 5 minutes!');
 	});
+
+	sched.scheduleJob('*/15 * * * *', () => {
+		channel.send('@everyone test message every 15 minutes!');
+	});
 });
 
 client.on('message', (msg) => {

@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "bot.js",
 	"scripts": {
-		"start": "npm"
+		"start": "node bot.js"
 	},
 	"keywords": [],
 	"author": "annatut",
