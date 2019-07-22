@@ -86,7 +86,7 @@ client.on('message', (msg) => {
 });
 
 client.on('guildMemberAdd', (member) => {
-	const channel = member.guild.channels.find((ch) => ch.name === 'member-log');
+	const channel = member.guild.channels.find((ch) => ch.name === 'main-topic');
 
 	if (!channel) return;
 
