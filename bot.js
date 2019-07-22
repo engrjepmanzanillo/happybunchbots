@@ -20,7 +20,7 @@ client.on('ready', () => {
 	//const guild = client.guilds.get('601663719650623498');
 	const hbguild = client.guilds.get('591183932309897227');
 	const gwchannel = hbguild.channels.get('593832445481058319');
-	const channel = hbguild.channels.get('595103524795449346');
+	const channel = hbguild.channels.get('602848535456514049');
 	if (!channel) return;
 	// test
 	// sched.scheduleJob('*/1 * * * *', () => {
