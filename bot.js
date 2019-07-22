@@ -27,7 +27,7 @@ client.on('ready', () => {
 		channel.send('@everyone Guildwar in 5 minutes!');
 	});
 
-	sched.scheduleJob('*/15 * * * *', () => {
+	sched.scheduleJob('0,15,30,45 * * * *', () => {
 		channel.send('@everyone test message every 15 minutes!');
 	});
 });
@@ -39,6 +39,9 @@ client.on('message', (msg) => {
 	let date = new Date();
 	let currentHour = date.getHours();
 	let currentMinute = date.getMinutes();
+	if (currentMinute < 10) {
+		currentMinute = `0${currentMinute}`;
+	}
 
 	if (msg.content === '!time') {
 		msg.reply(`Its ${currentHour}:${currentMinute} (${currentHour - 1}:${currentMinute} - Game Time)`);
