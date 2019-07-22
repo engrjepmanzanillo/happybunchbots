@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const auth = require('./auth.json');
+const TOKEN = process.env.TOKEN;
 const sched = require('node-schedule');
 
 const express = require('express');
@@ -35,36 +35,22 @@ client.on('ready', () => {
 	//guildwar
 	sched.scheduleJob('30 20 * * 2,4', () => {
 		channel.send('@everyone Assemble! Guildwar in 30 minutes!').then((sentMessage) => {
-			sentMessage.delete(1800000);
+			sentMessage.delete(1500000);
 		});
 	});
 
 	sched.scheduleJob('55 20 * * 2,4', () => {
-		channel.send('@everyone Guildwar in 5 minutes!').then((sentMessage) => {
-			sentMessage.delete(55000);
+		channel.send('@everyone Guildwar is in 5 minutes!').then((sentMessage) => {
+			sentMessage.delete(150000);
 		});
 	});
 
-	// sched.scheduleJob('5 0,15,30,45 * * * *', () => {
-	// 	let date = new Date();
-	// 	let currentHour = date.getHours();
-	// 	let currentMinute = date.getMinutes();
-	// 	let currentSecond = date.getSeconds();
-	// 	let amPm = 'AM';
-	// 	if (currentMinute < 10) {
-	// 		currentMinute = `0${currentMinute}`;
-	// 	}
-	// 	if (currentSecond < 10) {
-	// 		currentSecond = `0${currentSecond}`;
-	// 	}
-	// 	if (currentHour > 12) {
-	// 		currentHour = currentHour - 12;
-	// 		amPm = 'PM';
-	// 	}
-	// 	channel.send(`@everyone Time Check: Its now ${currentHour}:${currentMinute} ${amPm}`).then((sentMessage) => {
-	// 		sentMessage.delete(10000);
-	// 	});
-	// });
+	// guild ball
+	sched.scheduleJob('25 20 * * 1,3,5,7', () => {
+		channel.send('Get dressed @everyone! Guild Ball is in 5 minutes!').then((sentMessage) => {
+			sentMessage.delete(150000);
+		});
+	});
 });
 
 client.on('message', (msg) => {
@@ -107,4 +93,4 @@ client.on('guildMemberAdd', (member) => {
 	channel.send(`Welcome to the HappyBunch, ${member}`);
 });
 
-client.login(auth.token);
+client.login(TOKEN);
