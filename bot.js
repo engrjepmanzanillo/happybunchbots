@@ -26,20 +26,20 @@ client.on('ready', () => {
 	// });
 
 	//KE at 10:00
-	sched.scheduleJob('5 55 10,12,14,16,18,22 * * *', () => {
+	sched.scheduleJob('55 10,12,14,16,18,22 * * *', () => {
 		channel.send('@everyone Kingdom Events in 5 minutes.').then((sentMessage) => {
 			sentMessage.delete(300000);
 		});
 	});
 
 	//guildwar
-	sched.scheduleJob('5 30 20 * * 2,4', () => {
+	sched.scheduleJob('30 20 * * 2,4', () => {
 		channel.send('@everyone Assemble! Guildwar in 30 minutes!').then((sentMessage) => {
 			sentMessage.delete(1800000);
 		});
 	});
 
-	sched.scheduleJob('5 55 20 * * 2,4', () => {
+	sched.scheduleJob('55 20 * * 2,4', () => {
 		channel.send('@everyone Guildwar in 5 minutes!').then((sentMessage) => {
 			sentMessage.delete(55000);
 		});
