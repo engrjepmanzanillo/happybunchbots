@@ -36,6 +36,10 @@ client.on('message', (msg) => {
 	if (msg.content === '!ping') {
 		msg.reply('pong!');
 	}
+	const now = new Date();
+	if (msg.content === '!time') {
+		msg.reply(now);
+	}
 });
 
 client.on('guildMemberAdd', (member) => {
