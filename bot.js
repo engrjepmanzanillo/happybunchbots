@@ -39,12 +39,18 @@ client.on('message', (msg) => {
 	let date = new Date();
 	let currentHour = date.getHours();
 	let currentMinute = date.getMinutes();
+	let currentSecond = date.getSeconds();
 	if (currentMinute < 10) {
 		currentMinute = `0${currentMinute}`;
 	}
+	if (currentSecond < 10) {
+		currentSecond = `0${currentSecond}`;
+	}
 
 	if (msg.content === '!time') {
-		msg.reply(`Its ${currentHour}:${currentMinute} (${currentHour - 1}:${currentMinute} - Game Time)`);
+		msg.reply(
+			`Its now ${currentHour}:${currentMinute}:${currentSecond} (${currentHour - 1}:${currentMinute} - Game Time)`
+		);
 	}
 });
 
