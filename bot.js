@@ -53,6 +53,12 @@ client.on('ready', () => {
 			sentMessage.delete(300000);
 		});
 	});
+
+	sched.scheduleJob('55 20 * * 1', () => {
+		gwchannel.send('Chill @everyone! Snow Fight is in 5 minutes!').then((sentMessage) => {
+			sentMessage.delete(150000);
+		});
+	});
 });
 
 client.on('message', (msg) => {
