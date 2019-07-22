@@ -14,22 +14,45 @@ client.on('ready', () => {
 	// });
 
 	//KE at 10:00
-	sched.scheduleJob('55 10,12,14,16,18,22 * * *', () => {
-		channel.send('@everyone Kingdom Events in 5 minutes.');
+	sched.scheduleJob('5 55 10,12,14,16,18,22 * * *', () => {
+		channel.send('@everyone Kingdom Events in 5 minutes.').then((sentMessage) => {
+			sentMessage.delete(300000);
+		});
 	});
 
 	//guildwar
-	sched.scheduleJob('30 20 * * 2,4', () => {
-		channel.send('@everyone Assemble! Guildwar in 30 minutes!');
+	sched.scheduleJob('5 30 20 * * 2,4', () => {
+		channel.send('@everyone Assemble! Guildwar in 30 minutes!').then((sentMessage) => {
+			sentMessage.delete(1800000);
+		});
 	});
 
-	sched.scheduleJob('55 20 * * 2,4', () => {
-		channel.send('@everyone Guildwar in 5 minutes!');
+	sched.scheduleJob('5 55 20 * * 2,4', () => {
+		channel.send('@everyone Guildwar in 5 minutes!').then((sentMessage) => {
+			sentMessage.delete(55000);
+		});
 	});
 
-	sched.scheduleJob('0,15,30,45 * * * *', () => {
-		channel.send('@everyone test message every 15 minutes!');
-	});
+	// sched.scheduleJob('5 0,15,30,45 * * * *', () => {
+	// 	let date = new Date();
+	// 	let currentHour = date.getHours();
+	// 	let currentMinute = date.getMinutes();
+	// 	let currentSecond = date.getSeconds();
+	// 	let amPm = 'AM';
+	// 	if (currentMinute < 10) {
+	// 		currentMinute = `0${currentMinute}`;
+	// 	}
+	// 	if (currentSecond < 10) {
+	// 		currentSecond = `0${currentSecond}`;
+	// 	}
+	// 	if (currentHour > 12) {
+	// 		currentHour = currentHour - 12;
+	// 		amPm = 'PM';
+	// 	}
+	// 	channel.send(`@everyone Time Check: Its now ${currentHour}:${currentMinute} ${amPm}`).then((sentMessage) => {
+	// 		sentMessage.delete(10000);
+	// 	});
+	// });
 });
 
 client.on('message', (msg) => {
@@ -40,17 +63,27 @@ client.on('message', (msg) => {
 	let currentHour = date.getHours();
 	let currentMinute = date.getMinutes();
 	let currentSecond = date.getSeconds();
+	let amPm = 'AM';
 	if (currentMinute < 10) {
 		currentMinute = `0${currentMinute}`;
 	}
 	if (currentSecond < 10) {
 		currentSecond = `0${currentSecond}`;
 	}
-
+	if (currentHour > 12) {
+		currentHour = currentHour - 12;
+		amPm = 'PM';
+	}
 	if (msg.content === '!time') {
-		msg.reply(
-			`Its now ${currentHour}:${currentMinute}:${currentSecond} (${currentHour - 1}:${currentMinute} - Game Time)`
-		);
+		msg
+			.reply(
+				`Its now ${currentHour}:${currentMinute}:${currentSecond} ${amPm} (${currentHour -
+					1}:${currentMinute} ${amPm} - Game Time)`
+			)
+			.then((sentMessage) => {
+				sentMessage.delete(5000);
+			});
+		msg.delete(500);
 	}
 });
 
