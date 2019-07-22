@@ -36,9 +36,9 @@ client.on('message', (msg) => {
 	if (msg.content === '!ping') {
 		msg.reply('pong!');
 	}
-	const now = new Date();
+	const now = Date();
 	if (msg.content === '!time') {
-		msg.reply(now);
+		msg.reply(`${now.getHours()}:${now.getMinutes}`);
 	}
 });
 
