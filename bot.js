@@ -3,6 +3,18 @@ const client = new Discord.Client();
 const auth = require('./auth.json');
 const sched = require('node-schedule');
 
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+	res.send('Connecting');
+});
+
+app.listen(PORT, () => {
+	console.log(`Bot is connected. Listening on port ${PORT}`);
+});
+
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
 	const guild = client.guilds.get('601663719650623498');
