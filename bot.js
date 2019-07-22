@@ -48,7 +48,7 @@ client.on('ready', () => {
 	// guild ball
 	sched.scheduleJob('25 20 * * 1,3,5,7', () => {
 		channel.send('Get dressed @everyone! Guild Ball is in 5 minutes!').then((sentMessage) => {
-			sentMessage.delete(150000);
+			sentMessage.delete(300000);
 		});
 	});
 });
