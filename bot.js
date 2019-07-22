@@ -53,10 +53,16 @@ client.on('ready', () => {
 			sentMessage.delete(300000);
 		});
 	});
-
+	//snow fight
 	sched.scheduleJob('55 20 * * 1', () => {
 		channel.send('Chill @everyone! Snow Fight is in 5 minutes!').then((sentMessage) => {
 			sentMessage.delete(150000);
+		});
+	});
+	// world boss
+	sched.scheduleJob('25 12,16,22 * * *', () => {
+		channel.send('Prepare @everyone! World Boss is in 5 minutes!').then((sentMessage) => {
+			sentMessage.delete(180000);
 		});
 	});
 });
