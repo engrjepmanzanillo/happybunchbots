@@ -37,7 +37,7 @@ client.on('ready', () => {
 	});
 
 	sched.scheduleJob('55 20 * * 2,4', () => {
-		gwchannel.send('@everyone Guildwar is in 5 minutes!');
+		gwchannel.send('@everyone Guildwar is in 5 minutes! Good Luck!');
 	});
 
 	// guild ball
