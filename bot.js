@@ -42,21 +42,15 @@ client.on('ready', () => {
 
 	// guild ball
 	sched.scheduleJob('25 20 * * 1,3,5,7', () => {
-		channel.send('Get dressed @everyone! Guild Ball is in 5 minutes!').then((sentMessage) => {
-			sentMessage.delete(300000);
-		});
+		channel.send('Get dressed @everyone! Guild Ball is in 5 minutes!');
 	});
 	//snow fight
 	sched.scheduleJob('55 20 * * 1', () => {
-		channel.send('Chill @everyone! Snow Fight is in 5 minutes!').then((sentMessage) => {
-			sentMessage.delete(150000);
-		});
+		channel.send('Chill @everyone! Snow Fight is in 5 minutes!');
 	});
 	// world boss
 	sched.scheduleJob('25 12,16,22 * * *', () => {
-		channel.send('Prepare @everyone! World Boss is in 5 minutes!').then((sentMessage) => {
-			sentMessage.delete(180000);
-		});
+		channel.send('Prepare @everyone! World Boss is in 5 minutes!');
 	});
 });
 
