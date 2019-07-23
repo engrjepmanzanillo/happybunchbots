@@ -52,6 +52,11 @@ client.on('ready', () => {
 	sched.scheduleJob('25 12,16,22 * * *', () => {
 		channel.send('Prepare @everyone! World Boss is in 5 minutes!');
 	});
+
+	//old wombat
+	sched.scheduleJob('45 19 * * *', () => {
+		channel.send('@everyone! Old Wombat is visiting our Guild territory in 5 minutes!');
+	});
 });
 
 client.on('message', (msg) => {
