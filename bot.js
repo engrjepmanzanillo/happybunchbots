@@ -55,7 +55,7 @@ client.on('ready', () => {
 
 	//old wombat
 	sched.scheduleJob('45 19 * * *', () => {
-		channel.send('@everyone! Old Wombat is visiting our Guild territory in 5 minutes!');
+		channel.send('@everyone! Old Wombat is coming in our Guild territory in 5 minutes!');
 	});
 });
 
