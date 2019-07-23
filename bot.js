@@ -64,6 +64,7 @@ client.on('message', (msg) => {
 	let currentMinute = date.getMinutes();
 	let currentSecond = date.getSeconds();
 	let amPm = 'AM';
+	let gameAmPm = 'AM';
 	if (currentMinute < 10) {
 		currentMinute = `0${currentMinute}`;
 	}
@@ -76,17 +77,17 @@ client.on('message', (msg) => {
 	}
 	if (gameHour > 12) {
 		gameHour = gameHour - 12;
-		amPm = 'PM';
+		gameAmPm = 'PM';
 	}
 	if (msg.content === '!time') {
 		msg
 			.reply(
-				`Its now ${currentHour}:${currentMinute}:${currentSecond} ${amPm} (${gameHour}:${currentMinute} ${amPm} - Game Time)`
+				`Its now ${currentHour}:${currentMinute}:${currentSecond} ${amPm} (${gameHour}:${currentMinute} ${gameAmPm} - Game Time)`
 			)
 			.then((sentMessage) => {
 				sentMessage.delete(5000);
 			});
-		msg.delete(500);
+		msg.delete(1000);
 	}
 });
 
