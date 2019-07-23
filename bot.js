@@ -69,7 +69,7 @@ client.on('message', (msg) => {
 	if (currentSecond < 10) {
 		currentSecond = `0${currentSecond}`;
 	}
-	if (currentHour > 12) {
+	if (currentHour >= 13) {
 		currentHour = currentHour - 12;
 		amPm = 'PM';
 	}
