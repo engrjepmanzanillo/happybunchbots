@@ -14,13 +14,17 @@ module.exports = {
 		if (!args.length) {
 			return message.reply('Please specify ON or OFF');
 		}
-		let settings = args[0].toUpperCase();
-		if (settings === 'ON') {
-			return message.channel.send('Reminder for Guild War was set ON.');
-		} else if (settings === 'OFF') {
-			return message.channel.send('Reminder for Guild War was set OFF.');
+		let settings;
+		if (args[0].toUpperCase() === 'ON') {
+			settings === 'ON';
+		} else if (args[0].toUpperCase() === 'OFF') {
+			settings === 'OFF';
+		} else if (args[0].toUpperCase() === 'STATUS') {
+			return message.channel.send('Reminder for Guild War was set to');
 		} else {
 			return message.reply('Please specify ON or OFF');
 		}
+
+		message.channel.send(`Reminder for Guild Was was set to ${settings}`);
 	}
 };
