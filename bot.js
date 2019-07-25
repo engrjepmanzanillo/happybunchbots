@@ -108,7 +108,7 @@ client.on('message', (message) => {
 	}
 
 	if (command === 'gw') {
-		client.commands.get('gw').execute(message, member, args);
+		client.commands.get('gw').execute(message, args);
 	}
 });
 
