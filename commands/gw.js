@@ -25,6 +25,6 @@ module.exports = {
 			return message.reply('Please specify ON or OFF');
 		}
 
-		message.channel.send(`Reminder for Guild Was was set to ${settings.toString()}`);
+		message.channel.send(`Reminder for Guild War was set to ${String(settings)}`);
 	}
 };
