@@ -12,6 +12,7 @@ module.exports = {
 		console.log(message.author);
 		if (!args.length) {
 			message.reply('Please specify ON or OFF');
+			return;
 		}
 		let settings = args[0].toUpperCase();
 		if (settings === 'ON') {
