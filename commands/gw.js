@@ -6,9 +6,10 @@ module.exports = {
 	aliases: [ 'guildwar' ],
 	cooldown: 5,
 	execute(message, args) {
-		if (!message.author.hasPermission('MANAGE_CHANNEL')) {
-			message.reply("Sorry, you don't have a permission to use that");
-		}
+		// if (!message.author.hasPermission('MANAGE_CHANNEL')) {
+		// 	message.reply("Sorry, you don't have a permission to use that");
+		// }
+		console.log(message.author);
 		if (!args.length) {
 			message.reply('Please specify ON or OFF');
 		}
