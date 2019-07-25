@@ -1,6 +1,7 @@
 module.exports = {
 	name: 'time',
 	description: 'telling time (GMT+8)',
+	cooldown: 5,
 	execute(message, args) {
 		let date = new Date();
 		let currentHour = date.getHours();
