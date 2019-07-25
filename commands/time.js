@@ -23,15 +23,13 @@ module.exports = {
 			gameHour = gameHour - 12;
 			gameAmPm = 'PM';
 		}
-		if (command === 'time') {
-			message
-				.reply(
-					`Its now ${currentHour}:${currentMinute}:${currentSecond} ${amPm} (${gameHour}:${currentMinute} ${gameAmPm} - Game Time)`
-				)
-				.then((sentMessage) => {
-					sentMessage.delete(5000);
-				});
-			message.delete(1000);
-		}
+		message
+			.reply(
+				`Its now ${currentHour}:${currentMinute}:${currentSecond} ${amPm} (${gameHour}:${currentMinute} ${gameAmPm} - Game Time)`
+			)
+			.then((sentMessage) => {
+				sentMessage.delete(5000);
+			});
+		message.delete(1000);
 	}
 };
