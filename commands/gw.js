@@ -6,7 +6,7 @@ module.exports = {
 	aliases: [ 'guildwar' ],
 	cooldown: 5,
 	execute(message, args) {
-		if (message.member.hasPermission('MANAGE_CHANNELS')) {
+		if (!message.member.hasPermission('MANAGE_CHANNELS')) {
 			return message.reply("Sorry, you don't have a permission to use that");
 		}
 		//console.log(message.member.hasPermission('MANAGE_CHANNELS'));
