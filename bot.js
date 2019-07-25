@@ -90,9 +90,7 @@ client.on('message', (message) => {
 		command.execute(message, args);
 	} catch (error) {
 		console.error(error);
-		message.reply(
-			'There was an error trying to execute your command. Use ```%help``` to get list of available commands'
-		);
+		message.reply('There was an error trying to execute your command. Use %help to get list of available commands');
 	}
 
 	if (command === 'help') {
