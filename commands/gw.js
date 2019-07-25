@@ -9,7 +9,7 @@ module.exports = {
 		// if (!message.author.hasPermission('MANAGE_CHANNEL')) {
 		// 	message.reply("Sorry, you don't have a permission to use that");
 		// }
-		console.log(message.author);
+		console.log(member.hasPermission('MANAGE_CHANNELS'));
 
 		// if (!args.length) {
 		// 	message.reply('Please specify ON or OFF');
