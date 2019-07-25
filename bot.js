@@ -1,14 +1,27 @@
+const fs = require('fs');
 const Discord = require('discord.js');
 const client = new Discord.Client();
+client.commands = new Discord.Collection();
 const TOKEN = process.env.TOKEN;
+const prefix = require('./config.json');
 const sched = require('node-schedule');
 
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const commandFiles = fs.readdirSync('./commands').filter((file) => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+
+	client.commands.set(command.name, command);
+}
+
+const guildWarState = true;
+
 app.get('/', (req, res) => {
-	res.send('Connecting');
+	res.send('Connected to server!');
 });
 
 app.listen(PORT, () => {
@@ -30,14 +43,17 @@ client.on('ready', () => {
 	sched.scheduleJob('55 10,12,14,16,18,22 * * *', () => {
 		channel.send('@everyone Kingdom Events in 5 minutes.');
 	});
-
 	//guildwar
 	sched.scheduleJob('30 20 * * 2,4', () => {
-		gwchannel.send('@everyone Assemble! Guildwar in 30 minutes!');
+		if (guildWarState) {
+			gwchannel.send('@everyone Assemble! Guildwar in 30 minutes!');
+		} else return;
 	});
 
 	sched.scheduleJob('55 20 * * 2,4', () => {
-		gwchannel.send('@everyone Guildwar is in 5 minutes! Good Luck!');
+		if (guildWarState) {
+			gwchannel.send('@everyone Guildwar is in 5 minutes! Good Luck!');
+		} else return;
 	});
 
 	// guild ball
@@ -55,44 +71,30 @@ client.on('ready', () => {
 
 	//old wombat
 	sched.scheduleJob('45 19 * * *', () => {
-		channel.send('@everyone! Old Wombat is coming in our Guild territory in 5 minutes!');
+		channel.send('@everyone! Old Wombat is coming in our Guild territory in 5 minutes! Give him a warm welcome!');
 	});
 });
 
-client.on('message', (msg) => {
-	if (msg.content === '!ping') {
-		msg.reply('pong!');
+client.on('message', (message) => {
+	if (!message.content.startsWith(prefix) || message.author.bot) return;
+
+	const args = message.content.slice(prefix.length).split(/ +/);
+	const commandName = args.shift().toLowerCase();
+
+	if (!client.commands.has(commandName)) return;
+
+	const command = client.commands.get(commandName);
+
+	try {
+		command.execute(message, args);
+	} catch (error) {
+		console.error(error);
+		message.reply('there was an error trying to execute your command');
 	}
-	let date = new Date();
-	let currentHour = date.getHours();
-	let gameHour = date.getHours() - 1;
-	let currentMinute = date.getMinutes();
-	let currentSecond = date.getSeconds();
-	let amPm = 'AM';
-	let gameAmPm = 'AM';
-	if (currentMinute < 10) {
-		currentMinute = `0${currentMinute}`;
-	}
-	if (currentSecond < 10) {
-		currentSecond = `0${currentSecond}`;
-	}
-	if (currentHour > 12) {
-		currentHour = currentHour - 12;
-		amPm = 'PM';
-	}
-	if (gameHour > 12) {
-		gameHour = gameHour - 12;
-		gameAmPm = 'PM';
-	}
-	if (msg.content === '!time') {
-		msg
-			.reply(
-				`Its now ${currentHour}:${currentMinute}:${currentSecond} ${amPm} (${gameHour}:${currentMinute} ${gameAmPm} - Game Time)`
-			)
-			.then((sentMessage) => {
-				sentMessage.delete(5000);
-			});
-		msg.delete(1000);
+
+	if (command === 'ping') {
+		//message.channel.send('pong!');
+		client.commands.get('ping').execute(message, args);
 	}
 });
 
@@ -101,7 +103,7 @@ client.on('guildMemberAdd', (member) => {
 
 	if (!channel) return;
 
-	channel.send(`Welcome to the HappyBunch, ${member}`);
+	channel.send(`Welcome to the HappyBunch Guild! ${member}`);
 });
 
 client.login(TOKEN);
