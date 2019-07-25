@@ -5,22 +5,22 @@ module.exports = {
 	description: 'command setting for GW notifications',
 	aliases: [ 'guildwar' ],
 	cooldown: 5,
-	execute(message, member, args) {
-		if (!message.member.hasPermission('MANAGE_CHANNELS')) {
-			message.reply("Sorry, you don't have a permission to use that");
+	execute(message, args) {
+		if (message.member.hasPermission('MANAGE_CHANNELS')) {
+			return message.reply("Sorry, you don't have a permission to use that");
 		}
 		//console.log(message.member.hasPermission('MANAGE_CHANNELS'));
 
 		if (!args.length) {
-			message.reply('Please specify ON or OFF');
+			return message.reply('Please specify ON or OFF');
 		}
 		let settings = args[0].toUpperCase();
 		if (settings === 'ON') {
-			message.channel.send('Reminder for Guild War was set ON.');
+			return message.channel.send('Reminder for Guild War was set ON.');
 		} else if (settings === 'OFF') {
-			message.channel.send('Reminder for Guild War was set OFF.');
+			return message.channel.send('Reminder for Guild War was set OFF.');
 		} else {
-			message.reply('Please specify ON or OFF');
+			return message.reply('Please specify ON or OFF');
 		}
 	}
 };
