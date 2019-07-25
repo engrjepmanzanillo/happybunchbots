@@ -98,6 +98,10 @@ client.on('message', (message) => {
 		//message.channel.send('pong!');
 		client.commands.get('ping').execute(message, args);
 	}
+	if (command === 'time') {
+		//message.channel.send('pong!');
+		client.commands.get('time').execute(message, args);
+	}
 });
 
 client.on('guildMemberAdd', (member) => {
