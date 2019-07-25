@@ -121,6 +121,12 @@ client.on('message', (message) => {
 		} else {
 			message.channel.send('Please specify ON or OFF');
 		}
+		fs.writeFileSync('./options.json', guildWarAvailable, (error) => {
+			if (error) {
+				console.error(error);
+				return;
+			}
+		});
 	}
 });
 
