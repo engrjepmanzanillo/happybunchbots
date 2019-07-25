@@ -91,7 +91,14 @@ client.on('message', (message) => {
 		command.execute(message, args);
 	} catch (error) {
 		console.error(error);
-		message.reply('there was an error trying to execute your command');
+		message.reply(
+			'There was an error trying to execute your command. Use ```%help``` to get list of available commands'
+		);
+	}
+
+	if (command === 'help') {
+		//message.channel.send('pong!');
+		client.commands.get('help').execute(message, args);
 	}
 
 	if (command === 'ping') {
