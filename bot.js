@@ -20,6 +20,8 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+let settings = 'ON';
+
 app.get('/', (req, res) => {
 	res.send('Connected to server!');
 });
@@ -108,7 +110,7 @@ client.on('message', (message) => {
 	}
 
 	if (command === 'gw') {
-		client.commands.get('gw').execute(message, args);
+		client.commands.get('gw').execute(message, settings, args);
 	}
 });
 
