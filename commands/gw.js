@@ -9,18 +9,18 @@ module.exports = {
 		// if (!message.author.hasPermission('MANAGE_CHANNEL')) {
 		// 	message.reply("Sorry, you don't have a permission to use that");
 		// }
-		console.log(member);
-		if (!args.length) {
-			message.reply('Please specify ON or OFF');
-		} else {
-			let settings = args[0].toUpperCase();
-			if (settings === 'ON') {
-				message.channel.send('Reminder for Guild War was set ON.');
-			} else if (settings === 'OFF') {
-				message.channel.send('Reminder for Guild War was set OFF.');
-			} else {
-				message.reply('Please specify ON or OFF');
-			}
-		}
+		console.log(message.author);
+
+		// if (!args.length) {
+		// 	message.reply('Please specify ON or OFF');
+		// }
+		// let settings = args[0].toUpperCase();
+		// if (settings === 'ON') {
+		// 	message.channel.send('Reminder for Guild War was set ON.');
+		// } else if (settings === 'OFF') {
+		// 	message.channel.send('Reminder for Guild War was set OFF.');
+		// } else {
+		// 	message.reply('Please specify ON or OFF');
+		// }
 	}
 };
