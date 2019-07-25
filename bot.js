@@ -32,6 +32,7 @@ app.listen(PORT, () => {
 
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
+	client.user.setActivity('type %help');
 	//const guild = client.guilds.get('601663719650623498');
 	const hbguild = client.guilds.get('591183932309897227');
 	const gwchannel = hbguild.channels.get('593832445481058319');
