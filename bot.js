@@ -1,6 +1,7 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const { prefix } = require('./config.json');
+const { guildWarAvailable } = require('./options.json');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -19,8 +20,6 @@ const sched = require('node-schedule');
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-const guildWarAvailable = true;
 
 app.get('/', (req, res) => {
 	res.send('Connected to server!');
@@ -108,6 +107,10 @@ client.on('message', (message) => {
 	if (command === 'time') {
 		//message.channel.send('pong!');
 		client.commands.get('time').execute(message, args);
+	}
+
+	if (command === 'gw') {
+		client.commands.get('gw').execute(message, args);
 	}
 });
 
