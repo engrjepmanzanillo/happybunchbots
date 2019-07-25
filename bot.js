@@ -107,9 +107,9 @@ client.on('message', (message) => {
 		client.commands.get('time').execute(message, args);
 	}
 
-	if (command === 'gw') {
-		client.commands.get('gw').execute(message, args);
-	}
+	// if (command === 'gw') {
+
+	// }
 });
 
 client.on('guildMemberAdd', (member) => {
