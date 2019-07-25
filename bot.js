@@ -1,6 +1,7 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const { prefix } = require('./config.json');
+
 const { guildWarAvailable } = require('./options.json');
 
 const client = new Discord.Client();
@@ -107,9 +108,20 @@ client.on('message', (message) => {
 		client.commands.get('time').execute(message, args);
 	}
 
-	// if (command === 'gw') {
-
-	// }
+	if (command === 'gw') {
+		if (!message.author.permission.has('MANAGE_CHANNEL')) {
+			message.reply("Sorry, you don't have permissions for that command.");
+		}
+		if (args[1] === 'ON') {
+			guildWarAvailable = true;
+			message.channel.send('You set GW Notifications ON');
+		} else if (args[1] === 'OFF') {
+			guildWarAvailable = false;
+			message.channel.send('You set GW Notifications OFF');
+		} else {
+			message.channel.send('Please specify ON or OFF');
+		}
+	}
 });
 
 client.on('guildMemberAdd', (member) => {
