@@ -14,11 +14,14 @@ module.exports = {
 			message.reply('Please specify ON or OFF');
 			return;
 		}
-		let settings = args[0].toUpperCase();
+		let settings = args[0];
 		if (settings === 'ON') {
 			message.channel.send('Reminder for Guild War was set ON.');
 		} else if (settings === 'OFF') {
 			message.channel.send('Reminder for Guild War was set OFF.');
+		} else {
+			message.reply('Please specify ON or OFF');
+			return;
 		}
 	}
 };
