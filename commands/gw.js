@@ -5,7 +5,7 @@ module.exports = {
 	description: 'announcement message of availability of guildwar.',
 	cooldown: 5,
 	execute(message, args) {
-		if (!message.author.hasPermission('MANAGE_CHANNELS')) {
+		if (!message.author.permissions.has('MANAGE_CHANNELS')) {
 			message.reply('Sorry, you do not have permissions to set notifications.');
 		}
 		let gwData = JSON.parse(fs.readFileSync('./option.json', 'utf8'));
