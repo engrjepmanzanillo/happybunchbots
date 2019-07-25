@@ -20,7 +20,7 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const guildWarState = true;
+const guildWarAvailable = true;
 
 app.get('/', (req, res) => {
 	res.send('Connected to server!');
@@ -47,13 +47,13 @@ client.on('ready', () => {
 	});
 	//guildwar
 	sched.scheduleJob('30 20 * * 2,4', () => {
-		if (guildWarState) {
+		if (guildWarAvailable) {
 			gwchannel.send('@everyone Assemble! Guildwar in 30 minutes!');
 		} else return;
 	});
 
 	sched.scheduleJob('55 20 * * 2,4', () => {
-		if (guildWarState) {
+		if (guildWarAvailable) {
 			gwchannel.send('@everyone Guildwar is in 5 minutes! Good Luck!');
 		} else return;
 	});
