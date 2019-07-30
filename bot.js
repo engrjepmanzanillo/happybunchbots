@@ -13,7 +13,7 @@ for (const file of commandFiles) {
 	console.log(`${file} is ready.`);
 }
 
-let { guildWarAvailable } = require('./settings.json');
+//let { guildWarAvailable } = require('./settings.json');
 
 const TOKEN = process.env.TOKEN;
 const sched = require('node-schedule');
@@ -48,15 +48,11 @@ client.on('ready', () => {
 	});
 	//guildwar
 	sched.scheduleJob('30 20 * * 2,4', () => {
-		if (guildWarAvailable) {
-			gwchannel.send('@everyone Assemble! Guildwar in 30 minutes!');
-		} else return;
+		gwchannel.send('@everyone Assemble! Guildwar in 30 minutes!');
 	});
 
 	sched.scheduleJob('55 20 * * 2,4', () => {
-		if (guildWarAvailable) {
-			gwchannel.send('@everyone Guildwar is in 5 minutes! Good Luck!');
-		} else return;
+		gwchannel.send('@everyone Guildwar is in 5 minutes! Good Luck!');
 	});
 
 	// guild ball
