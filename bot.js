@@ -13,14 +13,14 @@ for (const file of commandFiles) {
 	console.log(`${file} is ready.`);
 }
 
+let { guildWarAvailable } = require('./settings.json');
+
 const TOKEN = process.env.TOKEN;
 const sched = require('node-schedule');
 
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-let settings = 'ON';
 
 app.get('/', (req, res) => {
 	res.send('Connected to server!');
@@ -110,7 +110,7 @@ client.on('message', (message) => {
 	}
 
 	if (command === 'gw') {
-		client.commands.get('gw').execute(message, settings, args);
+		client.commands.get('gw').execute(message, args);
 	}
 });
 
