@@ -4,6 +4,13 @@ module.exports = {
 	aliases: [ 'dice' ],
 	cooldown: 5,
 	execute(message, args) {
+		const channel = message.guild.channels.find((ch) => ch.name === 'games-and-fun');
+		if (!channel) return;
+		if (message.channel.name !== 'games-and-fun') {
+			message.delete(0);
+			channel.send(`Please play here <@${message.author.id}>`);
+			return;
+		}
 		if (!args.length) {
 			let randomNum = Math.floor(Math.random() * 24 + 1);
 			message.reply(`You rolled ${randomNum}.`);
