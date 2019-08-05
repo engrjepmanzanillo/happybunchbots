@@ -54,6 +54,10 @@ client.on('ready', () => {
 	sched.scheduleJob('55 20 * * 2,4', () => {
 		gwchannel.send('@everyone Guildwar is in 5 minutes! Good Luck!');
 	});
+	//overlord
+	sched.scheduleJob('55 20 * * 5', () => {
+		gwchannel.send('@everyone Overlord will be opened in 5 minutes! Good Luck!');
+	});
 
 	// guild ball
 	sched.scheduleJob('25 20 * * 1,3,5,7', () => {
