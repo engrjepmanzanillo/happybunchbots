@@ -13,8 +13,10 @@ module.exports = {
 		}
 		if (!args.length) {
 			let randomNum = Math.floor(Math.random() * 24 + 1);
+			message.delete(500);
 			message.reply(`You rolled ${randomNum}.`);
 		} else {
+			message.delete(1000);
 			message.reply("I didn't quite get your command. Type `%help roll` to get info.");
 		}
 	}
