@@ -89,7 +89,7 @@ client.on('ready', () => {
 	// racoons
 	sched.scheduleJob('0 11 * * *', () => {
 		channel.send(
-			"@everyone! Ever since the racoons had a taste of candy Old Wombat stole, they've been thirsty for more. Now, those troublemakers have targeted our guild. Be prepared to defend!"
+			"Ever since the racoons had a taste of candy Old Wombat stole, they've been thirsty for more. Now, those troublemakers have targeted our guild. Be prepared to defend!"
 		);
 	});
 });
