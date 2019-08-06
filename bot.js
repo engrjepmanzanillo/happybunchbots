@@ -86,6 +86,12 @@ client.on('ready', () => {
 	sched.scheduleJob('45 19 * * *', () => {
 		channel.send('@everyone! Old Wombat is coming in our Guild territory in 5 minutes! Give him a warm welcome!');
 	});
+	// racoons
+	sched.scheduleJob('0 11 * * *', () => {
+		channel.send(
+			"@everyone! Ever since the racoons had a taste of candy Old Wombat stole, they've been thirsty for more. Now, those troublemakers have targeted our guild. Be prepared to defend!"
+		);
+	});
 });
 
 client.on('message', (message) => {
