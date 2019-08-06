@@ -77,6 +77,11 @@ client.on('ready', () => {
 		channel.send('Prepare @everyone! Ancient Ruin Boss is coming in 5 minutes!');
 	});
 
+	// racing
+	sched.scheduleJob('55 20 * * 3', () => {
+		channel.send('Make you bets @everyone! Racing starts in 5 minutes!');
+	});
+
 	// treasure hunt
 	sched.scheduleJob('55 13,21 * * *', () => {
 		channel.send('Prepare @everyone! Treasure Hunter is in 5 minutes!');
