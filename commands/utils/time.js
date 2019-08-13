@@ -1,8 +1,19 @@
-module.exports = {
-	name: 'time',
-	description: 'telling time (GMT+8)',
-	cooldown: 5,
-	execute(message, args) {
+module.exports = class TimeCommand extends Command {
+	constructor(client) {
+		super(client, {
+			name: 'time',
+			group: 'utils',
+			memberName: 'time',
+			description: 'replies with the current time.',
+			throttling: {
+				usages: 1,
+				duration: 60
+			},
+			guildOnly: true
+		});
+	}
+
+	run(message, args) {
 		let date = new Date();
 		let currentHour = date.getHours();
 		let gameHour = date.getHours() - 1;
@@ -24,13 +35,15 @@ module.exports = {
 			gameHour = gameHour - 12;
 			gameAmPm = 'PM';
 		}
-		message
-			.reply(
-				`Its now ${currentHour}:${currentMinute}:${currentSecond} ${amPm} (${gameHour}:${currentMinute} ${gameAmPm} - Game Time)`
-			)
-			.then((sentMessage) => {
-				sentMessage.delete(5000);
-			});
-		message.delete(1000);
+		if (!args.length) {
+			message
+				.reply(
+					`Its now ${currentHour}:${currentMinute}:${currentSecond} ${amPm} (${gameHour}:${currentMinute} ${gameAmPm} - Game Time)`
+				)
+				.then((sentMessage) => {
+					sentMessage.delete(5000);
+				});
+			message.delete();
+		}
 	}
 };

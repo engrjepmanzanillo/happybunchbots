@@ -1,13 +1,19 @@
-module.exports = {
-	name: 'roll',
-	description: 'roll dice. (under development: leaderboards, coin system)',
-	aliases: [ 'dice' ],
-	cooldown: 5,
-	execute(message, args) {
+module.exports = class RollCommand extends Command {
+	constructor(client) {
+		super(client, {
+			name: 'roll',
+			group: 'games',
+			memberName: 'roll',
+			description: 'Roll dice',
+			guildOnly: true
+		});
+	}
+
+	run(message, args) {
 		const channel = message.guild.channels.find((ch) => ch.name === 'games-and-fun');
 		if (!channel) return;
 		if (message.channel.name !== 'games-and-fun') {
-			message.delete(0);
+			message.delete();
 			channel.send(`Please play here <@${message.author.id}>`);
 			return;
 		}

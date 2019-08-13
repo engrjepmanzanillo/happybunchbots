@@ -46,15 +46,14 @@ client.once('ready', () => {
 });
 
 // client on error
-client.on('error', console.error);
+client.on('error', console.error(error));
 
 //
 client.on('guildMemberAdd', (member) => {
 	const channel = member.guild.channels.find((ch) => ch.name === 'main-topic');
-
+	// if channel doesn't exists, return
 	if (!channel) return;
-
-	channel.send(`Welcome to the HappyBunch Guild! ${member}`);
+	channel.send(`@everyone! Let's welcome our new member, ${member}! Welcome to the HappyBunch!`);
 });
 
 // client login
