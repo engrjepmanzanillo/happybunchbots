@@ -1,3 +1,4 @@
+require('dotenv').config();
 const fs = require('fs');
 const Discord = require('discord.js');
 const { prefix } = require('./config.json');
@@ -5,6 +6,8 @@ const { prefix } = require('./config.json');
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
+const SQLite = require('better-sqlite3');
+const sql = new SQLite('./scores.sqlite');
 const commandFiles = fs.readdirSync('./commands').filter((file) => file.endsWith('.js'));
 
 for (const file of commandFiles) {
@@ -14,10 +17,17 @@ for (const file of commandFiles) {
 }
 
 //let { guildWarAvailable } = require('./settings.json');
-
 const TOKEN = process.env.TOKEN;
-const sched = require('node-schedule');
+const PHASE = process.env.PHASE;
+const DEV_TOKEN = process.env.DEV_TOKEN;
+let dToken;
+if (PHASE === 'PRODUCTION') {
+	dToken = TOKEN;
+} else {
+	dToken = DEV_TOKEN;
+}
 
+const sched = require('node-schedule');
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -32,15 +42,20 @@ app.listen(PORT, () => {
 
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
-	client.user.setActivity('type %help');
-	//const guild = client.guilds.get('601663719650623498');
-	const hbguild = client.guilds.get('591183932309897227');
-	const gwchannel = hbguild.channels.get('593832445481058319');
-	const channel = hbguild.channels.get('602848535456514049');
-	// test
-	// sched.scheduleJob('*/1 * * * *', () => {
-	// 	channel.send('@everyone Kingdom Events (test) in 5 minutes.');
-	// });
+	client.user.setActivity(`type ${prefix}help`);
+	let hbguild;
+	let gwchannel;
+	let channel;
+
+	if (PHASE === 'PRODUCTION') {
+		hbguild = client.guilds.get('591183932309897227');
+		gwchannel = hbguild.channels.get('593832445481058319');
+		channel = hbguild.channels.get('602848535456514049');
+	} else if (PHASE === 'DEVELOPMENT') {
+		hbguild = client.guilds.get('601663719650623498');
+		gwchannel = hbguild.channels.get('608556151923146753');
+		channel = hbguild.channels.get('601663877335482389');
+	}
 
 	//KE at 10:00
 	sched.scheduleJob('55 10,12,14,16,18,22 * * *', () => {
@@ -97,10 +112,33 @@ client.on('ready', () => {
 			"Ever since the racoons had a taste of candy Old Wombat stole, they've been thirsty for more. Now, those troublemakers have targeted our guild. Be prepared to defend!"
 		);
 	});
+
+	// point system
+	const table = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'scores';").get();
+	if (!table['count(*)']) {
+		// if table doesn't exists, will create database
+		sql
+			.prepare('CREATE TABLE scores (id TEXT PRIMARY KEY, user TEXT, guild TEXT, points INTEGER, level INTEGER);')
+			.run();
+		// ensuring that id is unique
+		sql.prepare('CREATE UNIQUE INDEX idx_scores_id ON scores (id);').run();
+		sql.pragma('synchronous = 1');
+		sql.pragma('journal_mode = wal');
+	}
+	// get to prepared statements and set score data
+	client.getScore = sql.prepare('SELECT * FROM scores WHERE user = ? AND guild = ?');
+	client.setScore = sql.prepare(
+		'INSERT OR REPLACE INTO scores (id, user, guild, points, level) VALUES (@id, @user, @guild, @points, @level);'
+	);
 });
 
 client.on('message', (message) => {
-	if (!message.content.startsWith(prefix) || message.author.bot) return;
+	if (message.author.bot) return;
+	const score = new xp(message);
+	//const score = new xp(message);
+	// initiate score system
+	console.log(`You have ${score.points} pts and are level ${score.level}`);
+	if (!message.content.startsWith(prefix)) return;
 
 	const args = message.content.slice(prefix.length).split(/ +/);
 	const commandName = args.shift().toLowerCase();
@@ -111,9 +149,12 @@ client.on('message', (message) => {
 
 	try {
 		command.execute(message, args);
+		console.log('test');
 	} catch (error) {
 		console.error(error);
-		message.reply('There was an error trying to execute your command. Use %help to get list of available commands');
+		message.reply(
+			`There was an error trying to execute your command. Use \`${prefix}help\` to get list of available commands`
+		);
 	}
 
 	if (command === 'help') {
@@ -129,7 +170,6 @@ client.on('message', (message) => {
 		//message.channel.send('pong!');
 		client.commands.get('time').execute(message, args);
 	}
-
 	if (command === 'roll') {
 		client.commands.get('roll').execute(message, args);
 	}
@@ -143,4 +183,28 @@ client.on('guildMemberAdd', (member) => {
 	channel.send(`Welcome to the HappyBunch Guild! ${member}`);
 });
 
-client.login(TOKEN);
+function xp(message) {
+	let score;
+	if (message.guild) {
+		score = client.getScore.get(message.author.id, message.guild.id);
+		if (!score) {
+			score = {
+				id: `${message.guild.id}-${message.author.id}`,
+				user: message.author.id,
+				guild: message.guild.id,
+				points: 0,
+				level: 1
+			};
+		}
+		score.points++;
+		const curLevel = Math.floor(0.1 * Math.sqrt(score.points));
+		if (score.level < curLevel) {
+			score.level++;
+			message.reply(`You've level up to Level ${curLevel}! Congrats!`);
+		}
+		client.setScore.run(score);
+	}
+	return score;
+}
+
+client.login(dToken);
