@@ -120,4 +120,11 @@ function reminder() {
 			"Ever since the racoons had a taste of candy Old Wombat stole, they've been thirsty for more. Now, those troublemakers have targeted our guild. Be prepared to defend!"
 		);
 	});
+
+	// sky castle
+	sched.scheduleJob('25 14 * * *', () => {
+		channel.send('@everyone! Sky Castle will be open in 5 mins.');
+	});
 }
+
+// creating score database
