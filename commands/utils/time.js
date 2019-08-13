@@ -1,3 +1,5 @@
+const { Command } = require('discord.js-commando');
+
 module.exports = class TimeCommand extends Command {
 	constructor(client) {
 		super(client, {

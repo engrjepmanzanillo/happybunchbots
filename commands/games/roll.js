@@ -1,3 +1,5 @@
+const { Command } = require('discord.js-commando');
+
 module.exports = class RollCommand extends Command {
 	constructor(client) {
 		super(client, {
@@ -21,9 +23,7 @@ module.exports = class RollCommand extends Command {
 			let randomNum = Math.floor(Math.random() * 24 + 1);
 			message.delete(500);
 			message.reply(`You rolled ${randomNum}.`);
-		} else {
-			message.delete(1000);
-			message.reply("I didn't quite get your command. Type `%help roll` to get info.");
+			return;
 		}
 	}
 };
