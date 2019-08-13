@@ -7,7 +7,7 @@ const TOKEN = process.env.TOKEN;
 const GUILD = process.env.GUILD;
 
 // setting up and run server
-const server = require('./server');
+const server = require('./helper/server');
 server();
 
 //node-scheduler
@@ -15,6 +15,8 @@ const sched = require('node-schedule');
 
 // sqlite provider
 const sqlite = require('sqlite');
+
+// helper functions
 
 //initiating client
 const client = new CommandoClient({
@@ -57,7 +59,7 @@ client.on('guildMemberAdd', (member) => {
 // client login
 client.login(TOKEN);
 
-// auto-reminder function
+// auto-reminder functions
 function reminder() {
 	const guild = client.guilds.get(GUILD);
 	const gwChannel = guild.channels.find((ch) => ch.name === 'guildwar-updates');
