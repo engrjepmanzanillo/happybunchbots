@@ -1,61 +1,70 @@
 require('dotenv').config();
-const fs = require('fs');
-const Discord = require('discord.js');
-const { prefix } = require('./config.json');
+const { CommandoClient } = require('discord.js-commando');
+const path = require('path');
 
-const client = new Discord.Client();
-client.commands = new Discord.Collection();
-
-const SQLite = require('better-sqlite3');
-const sql = new SQLite('./scores.sqlite');
-const commandFiles = fs.readdirSync('./commands').filter((file) => file.endsWith('.js'));
-
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	client.commands.set(command.name, command);
-	console.log(`${file} is ready.`);
-}
-
-//let { guildWarAvailable } = require('./settings.json');
+//declaring environmental variables
 const TOKEN = process.env.TOKEN;
-const PHASE = process.env.PHASE;
-const DEV_TOKEN = process.env.DEV_TOKEN;
-let dToken;
-if (PHASE === 'PRODUCTION') {
-	dToken = TOKEN;
-} else {
-	dToken = DEV_TOKEN;
-}
+const PORT = process.env.PORT || 3000;
+const GUILD = process.env.GUILD;
 
-const sched = require('node-schedule');
+//setup webhooks for heroku
+// i dont know yet on how to shortcut this. but its working.
 const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 3000;
-
 app.get('/', (req, res) => {
-	res.send('Connected to server!');
+	res.send('Deployed Success! Connected to Server!');
 });
-
 app.listen(PORT, () => {
-	console.log(`Bot is connected. Listening on port ${PORT}`);
+	console.log(`Bot is connected. Listening on PORT ${PORT}`);
+});
+//
+
+//node-scheduler
+const sched = require('node-schedule');
+
+//initiating client
+const client = new CommandoClient({
+	commandPrefix: '%',
+	owner: '233495043451781120'
+});
+//register client commands
+client.registry
+	.registerDefaultTypes()
+	.registerGroups([ [ 'utils', 'Utilities' ], [ 'games', 'Fun and Games' ] ])
+	.registerDefaultGroups()
+	.registerDefaultCommands({
+		help: false
+	})
+	.registerCommandsIn(path.join(__dirname, 'commands'));
+
+//ready client
+client.once('ready', () => {
+	console.log(`Logged in as ${client.user.tag}! (${client.user.id})`);
+	client.user.setActivity('type %help');
+	reminder();
+	console.log('reminder function initiated');
 });
 
-client.on('ready', () => {
-	console.log(`Logged in as ${client.user.tag}!`);
-	client.user.setActivity(`type ${prefix}help`);
-	let hbguild;
-	let gwchannel;
-	let channel;
+// client on error
+client.on('error', console.error);
 
-	if (PHASE === 'PRODUCTION') {
-		hbguild = client.guilds.get('591183932309897227');
-		gwchannel = hbguild.channels.get('593832445481058319');
-		channel = hbguild.channels.get('602848535456514049');
-	} else if (PHASE === 'DEVELOPMENT') {
-		hbguild = client.guilds.get('601663719650623498');
-		gwchannel = hbguild.channels.get('608556151923146753');
-		channel = hbguild.channels.get('601663877335482389');
-	}
+//
+client.on('guildMemberAdd', (member) => {
+	const channel = member.guild.channels.find((ch) => ch.name === 'main-topic');
+
+	if (!channel) return;
+
+	channel.send(`Welcome to the HappyBunch Guild! ${member}`);
+});
+
+// client login
+client.login(TOKEN);
+
+// auto-reminder function
+function reminder() {
+	const guild = client.guilds.get(GUILD);
+	const gwChannel = guild.channels.find((ch) => ch.name === 'guildwar-updates');
+	const channel = guild.channels.find((ch) => ch.name === 'events-reminder');
 
 	//KE at 10:00
 	sched.scheduleJob('55 10,12,14,16,18,22 * * *', () => {
@@ -63,15 +72,15 @@ client.on('ready', () => {
 	});
 	//guildwar
 	sched.scheduleJob('30 20 * * 2,4', () => {
-		gwchannel.send('@everyone Assemble! Guildwar in 30 minutes!');
+		gwChannel.send('@everyone Assemble! Guildwar in 30 minutes!');
 	});
 
 	sched.scheduleJob('55 20 * * 2,4', () => {
-		gwchannel.send('@everyone Guildwar is in 5 minutes! Good Luck!');
+		gwChannel.send('@everyone Guildwar is in 5 minutes! Good Luck!');
 	});
 	//overlord
 	sched.scheduleJob('55 20 * * 5', () => {
-		gwchannel.send('@everyone Overlord will be opened in 5 minutes! Good Luck!');
+		channel.send('@everyone Overlord will be opened in 5 minutes! Good Luck!');
 	});
 
 	// guild ball
@@ -112,99 +121,4 @@ client.on('ready', () => {
 			"Ever since the racoons had a taste of candy Old Wombat stole, they've been thirsty for more. Now, those troublemakers have targeted our guild. Be prepared to defend!"
 		);
 	});
-
-	// point system
-	const table = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'scores';").get();
-	if (!table['count(*)']) {
-		// if table doesn't exists, will create database
-		sql
-			.prepare('CREATE TABLE scores (id TEXT PRIMARY KEY, user TEXT, guild TEXT, points INTEGER, level INTEGER);')
-			.run();
-		// ensuring that id is unique
-		sql.prepare('CREATE UNIQUE INDEX idx_scores_id ON scores (id);').run();
-		sql.pragma('synchronous = 1');
-		sql.pragma('journal_mode = wal');
-	}
-	// get to prepared statements and set score data
-	client.getScore = sql.prepare('SELECT * FROM scores WHERE user = ? AND guild = ?');
-	client.setScore = sql.prepare(
-		'INSERT OR REPLACE INTO scores (id, user, guild, points, level) VALUES (@id, @user, @guild, @points, @level);'
-	);
-});
-
-client.on('message', (message) => {
-	if (message.author.bot) return;
-	const score = new xp(message);
-	//const score = new xp(message);
-	// initiate score system
-	console.log(`You have ${score.points} pts and are level ${score.level}`);
-	if (!message.content.startsWith(prefix)) return;
-
-	const args = message.content.slice(prefix.length).split(/ +/);
-	const commandName = args.shift().toLowerCase();
-
-	if (!client.commands.has(commandName)) return;
-
-	const command = client.commands.get(commandName);
-
-	try {
-		command.execute(message, args);
-		console.log('test');
-	} catch (error) {
-		console.error(error);
-		message.reply(
-			`There was an error trying to execute your command. Use \`${prefix}help\` to get list of available commands`
-		);
-	}
-
-	if (command === 'help') {
-		//message.channel.send('pong!');
-		client.commands.get('help').execute(message, args);
-	}
-
-	if (command === 'ping') {
-		//message.channel.send('pong!');
-		client.commands.get('ping').execute(message, args);
-	}
-	if (command === 'time') {
-		//message.channel.send('pong!');
-		client.commands.get('time').execute(message, args);
-	}
-	if (command === 'roll') {
-		client.commands.get('roll').execute(message, args);
-	}
-});
-
-client.on('guildMemberAdd', (member) => {
-	const channel = member.guild.channels.find((ch) => ch.name === 'main-topic');
-
-	if (!channel) return;
-
-	channel.send(`Welcome to the HappyBunch Guild! ${member}`);
-});
-
-function xp(message) {
-	let score;
-	if (message.guild) {
-		score = client.getScore.get(message.author.id, message.guild.id);
-		if (!score) {
-			score = {
-				id: `${message.guild.id}-${message.author.id}`,
-				user: message.author.id,
-				guild: message.guild.id,
-				points: 0,
-				level: 1
-			};
-		}
-		score.points++;
-		const curLevel = Math.floor(0.1 * Math.sqrt(score.points));
-		if (score.level < curLevel) {
-			score.level++;
-			message.reply(`You've level up to Level ${curLevel}! Congrats!`);
-		}
-		client.setScore.run(score);
-	}
-	return score;
 }
-
-client.login(dToken);
