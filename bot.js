@@ -1,26 +1,20 @@
 require('dotenv').config();
-const { CommandoClient } = require('discord.js-commando');
+const { CommandoClient, SQLiteProvider } = require('discord.js-commando');
 const path = require('path');
 
 //declaring environmental variables
 const TOKEN = process.env.TOKEN;
-const PORT = process.env.PORT || 3000;
 const GUILD = process.env.GUILD;
 
-//setup webhooks for heroku
-// i dont know yet on how to shortcut this. but its working.
-const express = require('express');
-const app = express();
-app.get('/', (req, res) => {
-	res.send('Deployed Success! Connected to Server!');
-});
-app.listen(PORT, () => {
-	console.log(`Bot is connected. Listening on PORT ${PORT}`);
-});
-//
+// setting up and run server
+const server = require('./server');
+server();
 
 //node-scheduler
 const sched = require('node-schedule');
+
+// sqlite provider
+const sqlite = require('sqlite');
 
 //initiating client
 const client = new CommandoClient({
@@ -33,20 +27,24 @@ client.registry
 	.registerGroups([ [ 'utils', 'Utilities' ], [ 'games', 'Fun and Games' ] ])
 	.registerDefaultGroups()
 	.registerDefaultCommands({
-		help: false
+		help: true
 	})
 	.registerCommandsIn(path.join(__dirname, 'commands'));
+
+client
+	.setProvider(sqlite.open(path.join(__dirname, 'database.sqlite3')).then((db) => new SQLiteProvider(db)))
+	.catch(console.error);
 
 //ready client
 client.once('ready', () => {
 	console.log(`Logged in as ${client.user.tag}! (${client.user.id})`);
 	client.user.setActivity('type %help');
 	reminder();
-	console.log('reminder function initiated');
+	console.log('reminder functions loaded.');
 });
 
 // client on error
-client.on('error', console.error(error));
+client.on('error', console.error);
 
 //
 client.on('guildMemberAdd', (member) => {
