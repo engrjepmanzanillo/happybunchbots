@@ -1,6 +1,7 @@
 require('dotenv').config();
-const { CommandoClient, SQLiteProvider } = require('discord.js-commando');
+const { CommandoClient } = require('discord.js-commando');
 const path = require('path');
+const fs = require('fs');
 
 //declaring environmental variables
 const TOKEN = process.env.TOKEN;
@@ -13,9 +14,6 @@ server();
 //node-scheduler
 const sched = require('node-schedule');
 
-// sqlite provider
-const sqlite = require('sqlite');
-
 // helper functions
 
 //initiating client
@@ -26,16 +24,12 @@ const client = new CommandoClient({
 //register client commands
 client.registry
 	.registerDefaultTypes()
-	.registerGroups([ [ 'utils', 'Utilities' ], [ 'games', 'Fun and Games' ] ])
+	.registerGroups([ [ 'utils', 'Utilities' ], [ 'games', 'Fun and Games' ], [ 'levels', 'XP System' ] ])
 	.registerDefaultGroups()
 	.registerDefaultCommands({
 		help: true
 	})
 	.registerCommandsIn(path.join(__dirname, 'commands'));
-
-client
-	.setProvider(sqlite.open(path.join(__dirname, 'database.sqlite3')).then((db) => new SQLiteProvider(db)))
-	.catch(console.error);
 
 //ready client
 client.once('ready', () => {
@@ -47,6 +41,43 @@ client.once('ready', () => {
 
 // client on error
 client.on('error', console.error);
+
+// client on messaging
+client.on('message', (message) => {
+	if (message.author.bot) return;
+	if (message.guild && message.content.indexOf('%') !== 0) {
+		let memberXP;
+		let fileName = './data/' + `${message.guild.id}-${message.author.id}.json`;
+		if (!fs.existsSync(fileName)) {
+			memberXP = {
+				id: `${message.guild.id}-${message.author.id}`,
+				user: message.author.id,
+				guild: message.guild.id,
+				points: 0,
+				level: 1
+			};
+			let data = JSON.stringify(memberXP);
+			fs.writeFile(fileName, data, (err) => {
+				if (err) throw console.error;
+				console.log(`${message.guild.id}-${message.author.id}.json was created.`);
+			});
+		}
+		fs.readFile(fileName, 'utf8', (err, data) => {
+			if (err) throw err;
+			memberXP = JSON.parse(data);
+			memberXP.points++;
+			const curLevel = Math.floor(0.1 * Math.sqrt(memberXP.points));
+			if (memberXP.level < curLevel) {
+				memberXP.level++;
+				message.reply(`Since you are active in this server, you've leveled up to level ${curLevel}!`);
+			}
+			let newdata = JSON.stringify(memberXP);
+			fs.writeFile(fileName, newdata, (err) => {
+				if (err) throw err;
+			});
+		});
+	}
+});
 
 //
 client.on('guildMemberAdd', (member) => {
@@ -126,5 +157,3 @@ function reminder() {
 		channel.send('@everyone! Sky Castle will be open in 5 mins.');
 	});
 }
-
-// creating score database
