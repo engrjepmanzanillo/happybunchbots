@@ -54,7 +54,9 @@ client.on('message', (message) => {
 				user: message.author.id,
 				guild: message.guild.id,
 				points: 0,
-				level: 1
+				level: 1,
+				// added coins for coin reward system
+				coins: 0
 			};
 			let data = JSON.stringify(memberXP);
 			fs.writeFile(fileName, data, (err) => {
@@ -65,6 +67,16 @@ client.on('message', (message) => {
 		fs.readFile(fileName, 'utf8', (err, data) => {
 			if (err) throw err;
 			memberXP = JSON.parse(data);
+			// I forgot to add coin member to the property and deployed.
+			// So in case of existing json file, I added coin prop here.
+			if (memberXP.coins === undefined) {
+				memberXP.coins = 0;
+				let addCoinProp = JSON.stringify(memberXP);
+				fs.writeFile(fileName, addCoinProp, (err) => {
+					if (err) throw err;
+					console.log('Coin Property added.');
+				});
+			}
 			memberXP.points++;
 			const curLevel = Math.floor(0.1 * Math.sqrt(memberXP.points));
 			if (memberXP.level < curLevel) {
