@@ -1,13 +1,21 @@
-module.exports = {
-	name: 'roll',
-	description: 'roll dice. (under development: leaderboards, coin system)',
-	aliases: [ 'dice' ],
-	cooldown: 5,
-	execute(message, args) {
+const { Command } = require('discord.js-commando');
+
+module.exports = class RollCommand extends Command {
+	constructor(client) {
+		super(client, {
+			name: 'roll',
+			group: 'games',
+			memberName: 'roll',
+			description: 'Roll dice',
+			guildOnly: true
+		});
+	}
+
+	run(message, args) {
 		const channel = message.guild.channels.find((ch) => ch.name === 'games-and-fun');
 		if (!channel) return;
 		if (message.channel.name !== 'games-and-fun') {
-			message.delete(0);
+			message.delete();
 			channel.send(`Please play here <@${message.author.id}>`);
 			return;
 		}
@@ -15,9 +23,7 @@ module.exports = {
 			let randomNum = Math.floor(Math.random() * 24 + 1);
 			message.delete(500);
 			message.reply(`You rolled ${randomNum}.`);
-		} else {
-			message.delete(1000);
-			message.reply("I didn't quite get your command. Type `%help roll` to get info.");
+			return;
 		}
 	}
 };

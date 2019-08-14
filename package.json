@@ -1,6 +1,6 @@
 {
 	"name": "happybunchbot",
-	"version": "1.0.0",
+	"version": "2.0.0",
 	"description": "",
 	"main": "bot.js",
 	"scripts": {
@@ -10,8 +10,16 @@
 	"author": "annatut",
 	"license": "ISC",
 	"dependencies": {
+		"better-sqlite3": "^5.4.2",
 		"discord.js": "^11.5.1",
+		"discord.js-commando": "^0.10.0",
+		"dotenv": "^8.0.0",
 		"express": "^4.17.1",
-		"node-schedule": "^1.3.2"
+		"node-gyp": "^5.0.3",
+		"node-opus": "^0.3.2",
+		"node-schedule": "^1.3.2",
+		"simple-youtube-api": "^5.2.1",
+		"sqlite": "^3.0.3",
+		"ytdl-core": "^0.29.5"
 	}
 }

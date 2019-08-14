@@ -1,46 +1,100 @@
+require('dotenv').config();
+const { CommandoClient } = require('discord.js-commando');
+const path = require('path');
 const fs = require('fs');
-const Discord = require('discord.js');
-const { prefix } = require('./config.json');
 
-const client = new Discord.Client();
-client.commands = new Discord.Collection();
-
-const commandFiles = fs.readdirSync('./commands').filter((file) => file.endsWith('.js'));
-
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	client.commands.set(command.name, command);
-	console.log(`${file} is ready.`);
-}
-
-//let { guildWarAvailable } = require('./settings.json');
-
+//declaring environmental variables
 const TOKEN = process.env.TOKEN;
+const GUILD = process.env.GUILD;
+
+// setting up and run server
+const server = require('./helper/server');
+server();
+
+//node-scheduler
 const sched = require('node-schedule');
 
-const express = require('express');
-const app = express();
-const PORT = process.env.PORT || 3000;
+// helper functions
 
-app.get('/', (req, res) => {
-	res.send('Connected to server!');
+//initiating client
+const client = new CommandoClient({
+	commandPrefix: '%',
+	owner: '233495043451781120'
 });
+//register client commands
+client.registry
+	.registerDefaultTypes()
+	.registerGroups([ [ 'utils', 'Utilities' ], [ 'games', 'Fun and Games' ], [ 'levels', 'XP System' ] ])
+	.registerDefaultGroups()
+	.registerDefaultCommands({
+		help: true
+	})
+	.registerCommandsIn(path.join(__dirname, 'commands'));
 
-app.listen(PORT, () => {
-	console.log(`Bot is connected. Listening on port ${PORT}`);
-});
-
-client.on('ready', () => {
-	console.log(`Logged in as ${client.user.tag}!`);
+//ready client
+client.once('ready', () => {
+	console.log(`Logged in as ${client.user.tag}! (${client.user.id})`);
 	client.user.setActivity('type %help');
-	//const guild = client.guilds.get('601663719650623498');
-	const hbguild = client.guilds.get('591183932309897227');
-	const gwchannel = hbguild.channels.get('593832445481058319');
-	const channel = hbguild.channels.get('602848535456514049');
-	// test
-	// sched.scheduleJob('*/1 * * * *', () => {
-	// 	channel.send('@everyone Kingdom Events (test) in 5 minutes.');
-	// });
+	reminder();
+	console.log('reminder functions loaded.');
+});
+
+// client on error
+client.on('error', console.error);
+
+// client on messaging
+client.on('message', (message) => {
+	if (message.author.bot) return;
+	if (message.guild && message.content.indexOf('%') !== 0) {
+		let memberXP;
+		let fileName = './data/' + `${message.guild.id}-${message.author.id}.json`;
+		if (!fs.existsSync(fileName)) {
+			memberXP = {
+				id: `${message.guild.id}-${message.author.id}`,
+				user: message.author.id,
+				guild: message.guild.id,
+				points: 0,
+				level: 1
+			};
+			let data = JSON.stringify(memberXP);
+			fs.writeFile(fileName, data, (err) => {
+				if (err) throw console.error;
+				console.log(`${message.guild.id}-${message.author.id}.json was created.`);
+			});
+		}
+		fs.readFile(fileName, 'utf8', (err, data) => {
+			if (err) throw err;
+			memberXP = JSON.parse(data);
+			memberXP.points++;
+			const curLevel = Math.floor(0.1 * Math.sqrt(memberXP.points));
+			if (memberXP.level < curLevel) {
+				memberXP.level++;
+				message.reply(`Since you are active in this server, you've leveled up to level ${curLevel}!`);
+			}
+			let newdata = JSON.stringify(memberXP);
+			fs.writeFile(fileName, newdata, (err) => {
+				if (err) throw err;
+			});
+		});
+	}
+});
+
+//
+client.on('guildMemberAdd', (member) => {
+	const channel = member.guild.channels.find((ch) => ch.name === 'main-topic');
+	// if channel doesn't exists, return
+	if (!channel) return;
+	channel.send(`@everyone! Let's welcome our new member, ${member}! Welcome to the HappyBunch!`);
+});
+
+// client login
+client.login(TOKEN);
+
+// auto-reminder functions
+function reminder() {
+	const guild = client.guilds.get(GUILD);
+	const gwChannel = guild.channels.find((ch) => ch.name === 'guildwar-updates');
+	const channel = guild.channels.find((ch) => ch.name === 'events-reminder');
 
 	//KE at 10:00
 	sched.scheduleJob('55 10,12,14,16,18,22 * * *', () => {
@@ -48,15 +102,15 @@ client.on('ready', () => {
 	});
 	//guildwar
 	sched.scheduleJob('30 20 * * 2,4', () => {
-		gwchannel.send('@everyone Assemble! Guildwar in 30 minutes!');
+		gwChannel.send('@everyone Assemble! Guildwar in 30 minutes!');
 	});
 
 	sched.scheduleJob('55 20 * * 2,4', () => {
-		gwchannel.send('@everyone Guildwar is in 5 minutes! Good Luck!');
+		gwChannel.send('@everyone Guildwar is in 5 minutes! Good Luck!');
 	});
 	//overlord
 	sched.scheduleJob('55 20 * * 5', () => {
-		gwchannel.send('@everyone Overlord will be opened in 5 minutes! Good Luck!');
+		channel.send('@everyone Overlord will be opened in 5 minutes! Good Luck!');
 	});
 
 	// guild ball
@@ -97,50 +151,9 @@ client.on('ready', () => {
 			"Ever since the racoons had a taste of candy Old Wombat stole, they've been thirsty for more. Now, those troublemakers have targeted our guild. Be prepared to defend!"
 		);
 	});
-});
 
-client.on('message', (message) => {
-	if (!message.content.startsWith(prefix) || message.author.bot) return;
-
-	const args = message.content.slice(prefix.length).split(/ +/);
-	const commandName = args.shift().toLowerCase();
-
-	if (!client.commands.has(commandName)) return;
-
-	const command = client.commands.get(commandName);
-
-	try {
-		command.execute(message, args);
-	} catch (error) {
-		console.error(error);
-		message.reply('There was an error trying to execute your command. Use %help to get list of available commands');
-	}
-
-	if (command === 'help') {
-		//message.channel.send('pong!');
-		client.commands.get('help').execute(message, args);
-	}
-
-	if (command === 'ping') {
-		//message.channel.send('pong!');
-		client.commands.get('ping').execute(message, args);
-	}
-	if (command === 'time') {
-		//message.channel.send('pong!');
-		client.commands.get('time').execute(message, args);
-	}
-
-	if (command === 'roll') {
-		client.commands.get('roll').execute(message, args);
-	}
-});
-
-client.on('guildMemberAdd', (member) => {
-	const channel = member.guild.channels.find((ch) => ch.name === 'main-topic');
-
-	if (!channel) return;
-
-	channel.send(`Welcome to the HappyBunch Guild! ${member}`);
-});
-
-client.login(TOKEN);
+	// sky castle
+	sched.scheduleJob('25 14 * * *', () => {
+		channel.send('@everyone! Sky Castle will be open in 5 mins.');
+	});
+}
