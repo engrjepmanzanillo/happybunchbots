@@ -14,8 +14,6 @@ server();
 //node-scheduler
 const sched = require('node-schedule');
 
-// helper functions
-
 //initiating client
 const client = new CommandoClient({
 	commandPrefix: '%',
