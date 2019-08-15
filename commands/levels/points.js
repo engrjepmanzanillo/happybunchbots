@@ -28,11 +28,11 @@ module.exports = class PointsCommand extends Command {
 			message.delete();
 			const embed = new RichEmbed()
 				//set title
-				.setTitle(`<@${message.author.id}>`)
+				.setTitle(message.author.tag)
 				.setColor(0xff0000)
 				.setThumbnail(message.author.displayAvatarURL)
 				.addBlankField()
-				.addField('Experience Points', `${score.points}/${basePoints}`)
+				.addField('Experience Points', `${score.points} / ${basePoints}`)
 				.addField('Noise Level', score.level)
 				.addField('Available Coins', `${score.coins} HappyBunch Coins`);
 
