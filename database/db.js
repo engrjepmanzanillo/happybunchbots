@@ -17,4 +17,16 @@ function initializeDatabase() {
 	}
 }
 
-module.exports = initializeDatabase;
+function getDatabase(authId, guildId) {
+	const getData = db.prepare('SELECT * FROM scores WHERE user = ? AND guild = ?');
+	return getData.get(authId, guildId);
+}
+
+function setDatabase(xpObj) {
+	const setData = db.prepare(
+		'INSERT OR REPLACE INTO scores (id, user, guild, points, level, coins) VALUES (@id, @user, @guild, @points, @level, @coins);'
+	);
+	setData.run(xpObj);
+}
+
+module.exports = { initializeDatabase, getDatabase, setDatabase };

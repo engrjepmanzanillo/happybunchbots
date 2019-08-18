@@ -1,19 +1,19 @@
 const { Command } = require('discord.js-commando');
 const { RichEmbed } = require('discord.js');
 
-module.exports = class PointsCommand extends Command {
+module.exports = class ProfileCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'points',
+			name: 'profile',
 			group: 'levels',
-			memberName: 'points',
-			description: 'Returns your current exp points and level.',
+			memberName: 'profile',
+			description: 'Returns your current exp points and level profile.',
 			guildOnly: true
 		});
 	}
 
 	run(message, args) {
-		const getDatabase = require('../../database/getdb');
+		const { getDatabase } = require('../../database/db');
 		let score;
 		const channel = message.guild.channels.find((ch) => ch.name === 'xp-profiles');
 		if (!channel) return;

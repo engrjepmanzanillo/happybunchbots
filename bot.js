@@ -10,10 +10,8 @@ const GUILD = process.env.GUILD;
 const server = require('./helper/server');
 server();
 
-// setting up database
-const initializeDatabase = require('./database/initializedb');
-const getDatabase = require('./database/getdb');
-const setDatabase = require('./database/setdb');
+// database functions
+const { initializeDatabase, getDatabase, setDatabase } = require('./database/db');
 
 //node-scheduler
 const sched = require('node-schedule');
