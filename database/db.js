@@ -15,6 +15,7 @@ function initializeDatabase() {
 		db.prepare('CREATE UNIQUE INDEX idx_scores_id ON scores (id);').run();
 		db.pragma('synchronous = 1');
 		db.pragma('journal_mode = wal');
+		console.log('database created.');
 	}
 }
 
