@@ -32,7 +32,7 @@ module.exports = class GiveCommand extends Command {
 		const { getDatabase, setDatabase, setUserData } = require('../../database/db');
 		if (message.author.id === user.id) {
 			message.delete();
-			message.reply("You can't give to yourself.");
+			message.reply("you can't give to yourself.");
 		}
 		let rCoin = getDatabase(user.id, message.guild.id);
 		if (!rCoin) {
@@ -48,7 +48,7 @@ module.exports = class GiveCommand extends Command {
 		gCoin = getDatabase(message.author.id, message.guild.id);
 		if (gCoin.coins < coinsToGive) {
 			message.delete();
-			message.reply("Sorry, you don't have enough coins to give. To check your coin balance, type `%coins`.");
+			message.reply("sorry, you don't have enough coins to give. To check your coin balance, type `%coins`.");
 			return;
 		}
 		gCoin.coins = gCoin.coins - coinsToGive;
@@ -56,6 +56,6 @@ module.exports = class GiveCommand extends Command {
 		setDatabase(gCoin);
 		setDatabase(rCoin);
 		message.delete();
-		message.reply(`You gave **${coinsToGive}** HappyBunch Coins to <@${user.id}>!`);
+		message.reply(`you gave **${coinsToGive}** HappyBunch Coins to <@${user.id}>!`);
 	}
 };

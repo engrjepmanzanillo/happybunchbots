@@ -30,7 +30,7 @@ module.exports = class CoinCommand extends Command {
 			setDatabase(coin);
 		}
 		if (!args.length) {
-			message.reply(`You currently have **${coin.coins}** HappyBunch Coin(s).`);
+			message.reply(`you currently have **${coin.coins}** HappyBunch Coins.`);
 		}
 	}
 };

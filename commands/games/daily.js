@@ -27,10 +27,10 @@ module.exports = class DailyCommand extends Command {
 			coin.isClaimed = 1;
 			setDatabase(coin);
 			message.delete();
-			message.reply('You received your 200 HappyBunch coin rewards!');
+			message.reply('you received your **200** HappyBunch coin rewards!');
 			return;
 		} else if (!args.length && coin.isClaimed) {
-			message.reply('Sorry, you have already claimed your rewards. Please claim again tomorrow.');
+			message.reply('sorry, you have already claimed your rewards. Please claim again tomorrow.');
 			return;
 		}
 	}
