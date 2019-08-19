@@ -38,7 +38,7 @@ function resetDaily() {
 }
 
 function setUserData(authId, guildId) {
-	data = {
+	const data = {
 		id: `${guildId}-${authId}`,
 		user: authId,
 		guild: guildId,

@@ -23,7 +23,6 @@ module.exports = class CookCommand extends Command {
 
 	run(message, args) {
 		const channel = message.guild.channels.find((ch) => ch.name === 'kitchen');
-		//console.log(channel);
 		if (!channel) return;
 		if (message.channel.name !== 'kitchen') {
 			message.delete(0);
@@ -78,7 +77,7 @@ module.exports = class CookCommand extends Command {
 		});
 		data.push('others coming soon...');
 		data.push(' ');
-		data.push('for any comments, corrections and concerns, feel free to DM annatut');
+		data.push('for any comments, corrections and concerns, feel free to DM <@233495043451781120>');
 
 		message.author
 			.send(data, { split: true })

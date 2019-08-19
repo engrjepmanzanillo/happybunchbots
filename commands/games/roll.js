@@ -28,7 +28,7 @@ module.exports = class RollCommand extends Command {
 			message.delete();
 			coin.rollTimes++;
 			message.reply(
-				`You rolled ${randomNum}. You earned ${coinReward} HappyBunch coin(s). (roll attempts: ${coin.rollTimes}/10)`
+				`You rolled **${randomNum}**. You just earned ${coinReward} HappyBunch coin(s)!. (Roll attempts: ${coin.rollTimes}/10)`
 			);
 			coin.coins = coin.coins + coinReward;
 			coin.points++;
@@ -37,6 +37,7 @@ module.exports = class RollCommand extends Command {
 		} else if (!args.length && coin.rollTimes > 10) {
 			message.delete();
 			message.reply('Sorry, you can only roll 10 times daily!');
+			return;
 		}
 	}
 };
