@@ -28,7 +28,7 @@ client.registry
 		[ 'utils', 'Utilities' ],
 		[ 'games', 'Fun and Games' ],
 		[ 'levels', 'XP System' ],
-		[ 'cookboook', 'Recipe Books' ]
+		[ 'cookbook', 'Recipe Books' ]
 	])
 	.registerDefaultGroups()
 	.registerDefaultCommands({

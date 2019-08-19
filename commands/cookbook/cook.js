@@ -7,7 +7,7 @@ module.exports = class CookCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'cook',
-			group: 'cookbooks',
+			group: 'cookbook',
 			memberName: 'cook',
 			description: 'cookbook lookup',
 			example: [ '%cook mashedpotato' ],
