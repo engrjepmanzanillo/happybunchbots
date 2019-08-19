@@ -1,4 +1,5 @@
 const db = require('better-sqlite3')('scores.db');
+const sched = require('node-schedule');
 
 function initializeDatabase() {
 	// check if table exists
@@ -24,9 +25,16 @@ function getDatabase(authId, guildId) {
 
 function setDatabase(xpObj) {
 	const setData = db.prepare(
-		'INSERT OR REPLACE INTO scores (id, user, guild, points, level, coins) VALUES (@id, @user, @guild, @points, @level, @coins);'
+		'INSERT OR REPLACE INTO scores (id, user, guild, points, level, coins, isClaimed, rollTimes) VALUES (@id, @user, @guild, @points, @level, @coins, @isClaimed, @rollTimes);'
 	);
 	setData.run(xpObj);
 }
 
-module.exports = { initializeDatabase, getDatabase, setDatabase };
+function resetDaily() {
+	sched.scheduleJob('0 0 * * *', () => {
+		db.preprare('UPDATE score SET isClaimed=0 WHERE isClaimed=1').run();
+		console.log('Daily Rewards are ready!');
+	});
+}
+
+module.exports = { initializeDatabase, getDatabase, setDatabase, resetDaily };

@@ -1,0 +1,237 @@
+[
+	{
+		"id": "1",
+		"commandName": "eggnoodles",
+		"cookbookName": "Egg Noodles",
+		"culinaryLevel": "1",
+		"formula": "Egg[1x], Wheat[2x]",
+		"effects": "Attack and Defense +110, HP +3300 (SA: HP recovery +3000) BR +2400",
+		"thumbnailUrl": "https://i.ibb.co/rHL7L0Z/hb-eggnoodles.jpg",
+		"colorRank": "DARKER_GREY",
+		"recipeReq": "N"
+	},
+	{
+		"id": "2",
+		"commandName": "mpotato",
+		"cookbookName": "Mashed Potato",
+		"culinaryLevel": "1",
+		"formula": "Wheat[3x]",
+		"effects": "Attack and Defense +120, HP +3600 (SA: Final Damage +1500) BR + 2520",
+		"thumbnailUrl": "https://i.ibb.co/ctKv1td/hb-mashedpotato.jpg",
+		"colorRank": "DARKER_GREY",
+
+		"recipeReq": "N"
+	},
+	{
+		"id": "3",
+		"commandName": "cmsoup",
+		"cookbookName": "Cold Millet Soup",
+		"culinaryLevel": "1",
+		"formula": "Corn[2x], Wheat[1x]",
+		"effects": "Attack and Defense +130, HP +3900 (SA: Reflect Damage +1500) BR +2640",
+		"thumbnailUrl": "https://i.ibb.co/2PFRJpp/hb-coldmilletsoup.jpg",
+		"colorRank": "DARKER_GREY",
+
+		"recipeReq": "N"
+	},
+	{
+		"id": "4",
+		"commandName": "fb",
+		"cookbookName": "Fish Balls",
+		"culinaryLevel": "1",
+		"formula": "Carp[1x], Wheat[1x], Egg[1x]",
+		"effects": "Attack and Defense +140, HP +4200 (SA: VIT +1.0%) BR +2760",
+		"thumbnailUrl": "https://i.ibb.co/4ZytF1z/hb-fishball.jpg",
+		"colorRank": "DARKER_GREY",
+
+		"recipeReq": "N"
+	},
+	{
+		"id": "5",
+		"commandName": "fff",
+		"cookbookName": "Flowery Fish Fillet",
+		"culinaryLevel": "1",
+		"formula": "Carp[1x], Corn[1x], Potato[1x]",
+		"effects": " Attack and Defense +140, HP +4200 (SA: ?) BR +2880",
+		"thumbnailUrl": "https://i.ibb.co/C9qtp8g/hb-floweryfishfillet.jpg",
+		"colorRank": "DARKER_GREY",
+
+		"recipeReq": "Y"
+	},
+	{
+		"id": "6",
+		"commandName": "pomelette",
+		"cookbookName": "Plain Omelette",
+		"culinaryLevel": "5",
+		"formula": "Egg[2x], Cheese[1x], Butter[1x]",
+		"effects": "Attack and Defense + 160, HP +4800 (SA: Life Steal +2000) BR +3000",
+		"thumbnailUrl": "https://i.ibb.co/Dz8sGYv/hb-plainomelette.jpg",
+		"colorRank": "0xcfc03",
+		"recipeReq": ""
+	},
+	{
+		"id": "7",
+		"commandName": "gcpizza",
+		"cookbookName": "Garden Cod Pizza",
+		"culinaryLevel": "5",
+		"formula": "Cod[1x], Carrot[1x], Wheat[1x], Corn[1x]",
+		"effects": "Attack and Defense +170, HP +5100 (SA: Healing Done +5.0%, VIT +1.0%) BR +3120",
+		"thumbnailUrl": "https://i.ibb.co/0s9TQgW/hb-gardencodpizza.jpg",
+		"colorRank": "0xcfc03",
+		"recipeReq": "N"
+	},
+	{
+		"id": "8",
+		"commandName": "fnlskewers",
+		"cookbookName": "Fish and Lamb Skewers",
+		"culinaryLevel": "5",
+		"formula": "Cod[1x], Mutton[2x], Butter[1x]",
+		"effects": "Attack and Defense +180, HP +5400 (SA: Block Chance + 1.0%) BR +3240",
+		"thumbnailUrl": "https://i.ibb.co/jTmR3QB/hb-fishandlambskewers.jpg",
+		"colorRank": "0xcfc03",
+		"recipeReq": "N"
+	},
+	{
+		"id": "9",
+		"commandName": "wchowder",
+		"cookbookName": "Warrior Chowder",
+		"culinaryLevel": "5",
+		"formula": "Puffer[1x], Butter[1x], Carrot[1x], Corn[1x]",
+		"effects": "Attack and Defense +190, HP +5700 (SA: Crit Damage? +2.0%) BR + 3360",
+		"thumbnailUrl": "https://i.ibb.co/dJ7gCRz/hb-warriorchowder.jpg",
+		"colorRank": "0xcfc03",
+		"recipeReq": "N"
+	},
+	{
+		"id": "10",
+		"commandName": "spag",
+		"cookbookName": "Spaghetti with Meat Sauce",
+		"culinaryLevel": "5",
+		"formula": "Mutton[1x], Butter[1x], Carrot[1x], Wheat[1x]",
+		"effects": " Attack and Defense +200, HP +6000",
+		"thumbnailUrl": "https://i.ibb.co/S0XQVRx/hb-spaghettiwithmeatsauce.jpg",
+		"colorRank": "0xcfc03",
+		"recipeReq": "Y"
+	},
+	{
+		"id": "11",
+		"commandName": "bbqchicken",
+		"cookbookName": "BBQ Chicken Cheese Wrap",
+		"culinaryLevel": "10",
+		"formula": "Chicken[2x], Carrot[1x], Butter[1x], Cheese[1x]",
+		"effects": "Atk and Def +240, HP +7200 (SA: Accuracy +1.0%, DMGx 0.0% – 1.0% ) BR +3960",
+		"thumbnailUrl": "https://i.ibb.co/TMYM18j/hb-bbqchicken.jpg",
+		"colorRank": "0x03b1fc",
+		"recipeReq": "N"
+	},
+	{
+		"id": "12",
+		"commandName": "acodfillet",
+		"cookbookName": "Alaskan Cod Fillet",
+		"culinaryLevel": "10",
+		"formula": "Cod[2x], Butter[1x], Egg[1x], Black Pepper[1x]",
+		"effects": "Atk and Def +260, HP +7800 (SA: Ignore DEF +2.0% – 4.0% +4200",
+		"thumbnailUrl": "https://i.ibb.co/kg93G05/hb-acodfillet.jpg",
+		"colorRank": "0x03b1fc",
+		"recipeReq": "N"
+	},
+	{
+		"id": "13",
+		"commandName": "beijingchicken",
+		"cookbookName": "Beijing Chicken Wrap",
+		"culinaryLevel": "10",
+		"formula": "Chicken[1x], Egg[1x], Carrot[1x], Wheat[1x], Tomato[1x]",
+		"effects": "Attack and Defense +220 , HP +6600 (SA: Crit Resistance +1.0% – 2.0%) BR +3720",
+		"thumbnailUrl": "https://i.ibb.co/s1KkSNQ/hb-beijingchicken.jpg",
+		"colorRank": "0x03b1fc",
+		"recipeReq": "N"
+	},
+	{
+		"id": "14",
+		"commandName": "kfc",
+		"cookbookName": "Crispy Chicken Burger",
+		"culinaryLevel": "10",
+		"formula": "Chicken[1x], Black Pepper[1x], Wheat[1x], Egg[1x], Potato[1x]",
+		"effects": "Attack and Defense +280 , HP +8400 (SA: Healing one +5.0%, Crit Damage +2.0%, Reduction Crit Resistanace +0.0% – 2.0%) BR +4440",
+		"thumbnailUrl": "https://i.ibb.co/bm6K0Mw/hb-chickenburger.jpg",
+		"colorRank": "0x03b1fc",
+		"recipeReq": "N"
+	},
+	{
+		"id": "15",
+		"commandName": "mlambchops",
+		"cookbookName": "Magic Lamb Chops",
+		"culinaryLevel": "10",
+		"formula": "Mutton[2x], Butter[1x], Tomato[1x], Black Pepper[1x]",
+		"effects": "BR +4680",
+		"thumbnailUrl": "https://i.ibb.co/XXFBBSZ/hb-mlambchops.jpg",
+		"colorRank": "0x03b1fc",
+		"recipeReq": "Y"
+	},
+	{
+		"id": "16",
+		"commandName": "muttonstew",
+		"cookbookName": "Mutton Stew with Potatoes",
+		"culinaryLevel": "15",
+		"formula": "",
+		"effects": "Attack and Defense +320 HP +9600 (SA: Healing +5%, HP +1%, DMGx +1%, Damage from all classes +0-1%) BR + 4920",
+		"thumbnailUrl": "https://i.ibb.co/XS3zdNb/hb-muttonstew.jpg",
+		"colorRank": "0x9803fc",
+		"recipeReq": "N"
+	},
+	{
+		"id": "17",
+		"commandName": "chickenrice",
+		"cookbookName": "Braised Chicken Rice with Cheese",
+		"culinaryLevel": "15",
+		"formula": "",
+		"effects": "Attack and Defense +340, HP +10200 (SA: Life Steal Rate +1-2%, Debuff Resistance +0-3%) BR +5160",
+		"thumbnailUrl": "https://i.ibb.co/BgYHBDC/hb-chickenrice.jpg",
+		"colorRank": "0x9803fc",
+		"recipeReq": "N"
+	},
+	{
+		"id": "18",
+		"commandName": "bplambchops",
+		"cookbookName": "Black Pepper Lamb Chops",
+		"culinaryLevel": "15",
+		"formula": "Lamb Leg[2x], Onion[1x], Black Pepper[1x], Butter[1x]",
+		"effects": "Attack and Defense +360, HP +10800 (SA: Execute Damage +2-4%) BR + 5400",
+		"thumbnailUrl": "https://i.ibb.co/sm9MCBZ/hb-bplambchops.jpg",
+		"colorRank": "0x9803fc",
+		"recipeReq": "N"
+	},
+	{
+		"id": "19",
+		"commandName": "sfnoodles",
+		"cookbookName": "Spanish Seafood Noodles",
+		"culinaryLevel": "15",
+		"formula": "Squid[1x], Black Pepper[1x], Onion[1x], Wheat[1x], Potato[1x]",
+		"effects": "Attack and Defense +380, HP +11400 (SA: Bonus Damage to targets with debuff + 2-4%) BR +5640",
+		"thumbnailUrl": "https://i.ibb.co/4MTsM57/hb-sfnoodles.jpg",
+		"colorRank": "0x9803fc",
+		"recipeReq": "Y"
+	},
+	{
+		"id": "20",
+		"commandName": "kalamares",
+		"cookbookName": "Squid Rings",
+		"culinaryLevel": "15",
+		"formula": "Squid[1x], Black Pepper[1x], Wheat[1x], Egg[1x], Butter[1x]",
+		"effects": "Attack and Defense +400, HP +12000 (SA: Crit Dmg +4%, Crit Rate +0-2%) BR +5880",
+		"thumbnailUrl": "https://i.ibb.co/NsBqw6p/hb-squidring.jpg",
+		"colorRank": "0x9803fc",
+		"recipeReq": "Y"
+	},
+	{
+		"id": "21",
+		"commandName": "fgsalad",
+		"cookbookName": "Fresh Garden Salad",
+		"culinaryLevel": "20",
+		"formula": "Lettuce[1x], Mushroom[1x], Carrot[1x], Tomato[1x], Onion[1x]",
+		"effects": "Attack and Defense +420, HP +12600 (SA:block rate +2%, HP +0%~2%, block reduction +0%~2%) BR+6210",
+		"thumbnailUrl": "https://i.ibb.co/ZdYkkJv/hb-fgsalad.jpg",
+		"colorRank": "0x9803fc",
+		"recipeReq": "N"
+	}
+]

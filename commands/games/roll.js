@@ -6,24 +6,36 @@ module.exports = class RollCommand extends Command {
 			name: 'roll',
 			group: 'games',
 			memberName: 'roll',
-			description: 'Roll dice',
+			description: 'Roll dice and earn coins!',
 			guildOnly: true
 		});
 	}
 
 	run(message, args) {
+		const { getDatabase, setDatabase } = require('../../database/db');
 		const channel = message.guild.channels.find((ch) => ch.name === 'games-and-fun');
+		let coin = getDatabase(message.author.id, message.guild.id);
 		if (!channel) return;
 		if (message.channel.name !== 'games-and-fun') {
 			message.delete();
 			channel.send(`Please play here <@${message.author.id}>`);
 			return;
 		}
-		if (!args.length) {
+		if (!coin) return;
+		if (!args.length && coin.rollTimes <= 10) {
 			let randomNum = Math.floor(Math.random() * 24 + 1);
-			message.delete(500);
-			message.reply(`You rolled ${randomNum}.`);
+			let coinReward = parseInt(Math.floor(randomNum / 2));
+			message.delete(100);
+			coin.rollTimes++;
+			message.reply(
+				`You rolled ${randomNum}. You earned ${coinReward} HappyBunch coin(s). (roll attempts: ${coin.rollTimes}/10)`
+			);
+			coin.coins = coin.coins + coinReward;
+			coin.points++;
+			setDatabase(coin);
 			return;
+		} else if (!args.length && coin.rollTimes >= 11) {
+			message.reply('Sorry, you can only roll 10 times daily!');
 		}
 	}
 };

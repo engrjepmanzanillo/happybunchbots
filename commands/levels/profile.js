@@ -24,7 +24,7 @@ module.exports = class ProfileCommand extends Command {
 		}
 		if (!args.length) {
 			score = getDatabase(message.author.id, message.guild.id);
-			const basePoints = Math.floor(Math.pow((score.level + 1) / 0.1, 2));
+			const basePoints = Math.floor(Math.pow((score.level + 1) / 0.25, 2));
 			message.delete();
 			const embed = new RichEmbed()
 				//set title
@@ -33,8 +33,8 @@ module.exports = class ProfileCommand extends Command {
 				.setThumbnail(message.author.displayAvatarURL)
 				.addBlankField()
 				.addField('Experience Points', `${score.points} / ${basePoints}`)
-				.addField('Noise Level', score.level)
-				.addField('Available Coins', `${score.coins} HappyBunch Coins`);
+				.addField('Talkative Level', score.level)
+				.addField('Available Coins :moneybag:', `${score.coins} HappyBunch Coins`);
 
 			message.channel.send(embed);
 		}

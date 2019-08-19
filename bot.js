@@ -11,7 +11,7 @@ const server = require('./helper/server');
 server();
 
 // database functions
-const { initializeDatabase, getDatabase, setDatabase } = require('./database/db');
+const { initializeDatabase, getDatabase, setDatabase, resetDaily } = require('./database/db');
 
 //node-scheduler
 const sched = require('node-schedule');
@@ -24,7 +24,12 @@ const client = new CommandoClient({
 //register client commands
 client.registry
 	.registerDefaultTypes()
-	.registerGroups([ [ 'utils', 'Utilities' ], [ 'games', 'Fun and Games' ], [ 'levels', 'XP System' ] ])
+	.registerGroups([
+		[ 'utils', 'Utilities' ],
+		[ 'games', 'Fun and Games' ],
+		[ 'levels', 'XP System' ],
+		[ 'cookboook', 'Recipe Books' ]
+	])
 	.registerDefaultGroups()
 	.registerDefaultCommands({
 		help: true
@@ -39,6 +44,7 @@ client.once('ready', () => {
 	console.log('reminder functions loaded.');
 	initializeDatabase();
 	console.log('database loaded');
+	resetDaily();
 });
 
 // client on error
@@ -57,14 +63,18 @@ client.on('message', (message) => {
 				guild: message.guild.id,
 				points: 0,
 				level: 1,
-				coins: 0
+				coins: 0,
+				isClaimed: false,
+				rollTimes: 0
 			};
 		}
 		score.points++;
-		const curLevel = Math.floor(0.1 * Math.sqrt(score.points));
+		const curLevel = Math.floor(0.25 * Math.sqrt(score.points));
 		if (score.level < curLevel) {
 			score.level++;
-			message.reply(`You've leveled up to level ${curLevel}! Congrats!`);
+			message.reply(
+				`You've leveled up to level ${curLevel}! Congrats! type \`%profile\` to see your XP Profile!`
+			);
 		}
 		setDatabase(score);
 	}
