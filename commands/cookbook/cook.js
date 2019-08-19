@@ -9,7 +9,7 @@ module.exports = class CookCommand extends Command {
 			name: 'cook',
 			group: 'cookbook',
 			memberName: 'cook',
-			description: 'cookbook lookup',
+			description: 'Cookbook lookup',
 			example: [ '%cook mashedpotato' ],
 			args: [
 				{

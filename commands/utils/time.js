@@ -6,7 +6,7 @@ module.exports = class TimeCommand extends Command {
 			name: 'time',
 			group: 'utils',
 			memberName: 'time',
-			description: 'replies with the current time.',
+			description: 'Replies with the current time.',
 			throttling: {
 				usages: 1,
 				duration: 60
