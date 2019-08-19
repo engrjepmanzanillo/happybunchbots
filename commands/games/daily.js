@@ -12,8 +12,7 @@ module.exports = class DailyCommand extends Command {
 	}
 
 	run(message, args) {
-		const { getDatabase, setDatabase } = require('../../database/db');
-		let coin = getDatabase(message.author.id, message.guild.id);
+		const { getDatabase, setDatabase, setUserdata } = require('../../database/db');
 		const channel = message.guild.channels.find((ch) => ch.name === 'games-and-fun');
 		if (!channel) return;
 		if (message.channel.name !== 'games-and-fun') {
@@ -21,15 +20,11 @@ module.exports = class DailyCommand extends Command {
 			channel.send(`Please claim your daily coins :moneybag: here <@${message.author.id}>`);
 			return;
 		}
-		if (!coin) {
-			message.reply(
-				"Sorry, you don't have any points yet. Please say something or greet us first then try again :smile:"
-			);
-			return;
-		}
+		let coin = getDatabase(message.author.id, message.guild.id);
+		if (!coin) coin = setUserdata(message.author.id, message.guild.id);
 		if (!args.length && !coin.isClaimed) {
 			coin.coins = coin.coins + 200;
-			coin.isClaimed = true;
+			coin.isClaimed = 1;
 			setDatabase(coin);
 			message.delete();
 			message.reply('You received your 200 HappyBunch coin rewards!');

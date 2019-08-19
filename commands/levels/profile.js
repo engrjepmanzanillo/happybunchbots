@@ -8,7 +8,11 @@ module.exports = class ProfileCommand extends Command {
 			group: 'levels',
 			memberName: 'profile',
 			description: 'Returns your current exp points and level profile.',
-			guildOnly: true
+			guildOnly: true,
+			throttling: {
+				usages: 1,
+				duration: 60
+			}
 		});
 	}
 

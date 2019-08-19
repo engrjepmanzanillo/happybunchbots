@@ -11,7 +11,7 @@ const server = require('./helper/server');
 server();
 
 // database functions
-const { initializeDatabase, getDatabase, setDatabase, resetDaily } = require('./database/db');
+const { initializeDatabase, getDatabase, setDatabase, resetDaily, setUserData } = require('./database/db');
 
 //node-scheduler
 const sched = require('node-schedule');
@@ -56,18 +56,7 @@ client.on('message', (message) => {
 	let score;
 	if (message.guild && message.content.indexOf('%') !== 0) {
 		score = getDatabase(message.author.id, message.guild.id);
-		if (!score) {
-			score = {
-				id: `${message.guild.id}-${message.author.id}`,
-				user: message.author.id,
-				guild: message.guild.id,
-				points: 0,
-				level: 1,
-				coins: 0,
-				isClaimed: false,
-				rollTimes: 0
-			};
-		}
+		if (!score) score = setUserData(message.author.id, message.guild.id);
 		score.points++;
 		const curLevel = Math.floor(0.25 * Math.sqrt(score.points));
 		if (score.level < curLevel) {

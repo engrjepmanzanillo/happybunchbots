@@ -8,7 +8,7 @@ function initializeDatabase() {
 		// if table doesn't exists, create table and setup database
 		db
 			.prepare(
-				'CREATE TABLE scores (id TEXT PRIMARY KEY, user TEXT, guild TEXT, points INTEGER, level INTEGER, coins INTEGER);'
+				'CREATE TABLE scores (id TEXT PRIMARY KEY, user TEXT, guild TEXT, points INTEGER, level INTEGER, coins INTEGER, isClaimed INTEGER, rollTimes INTEGER);'
 			)
 			.run();
 		// ensure that id row is always unique and indexed
@@ -32,9 +32,29 @@ function setDatabase(xpObj) {
 
 function resetDaily() {
 	sched.scheduleJob('0 0 * * *', () => {
-		db.preprare('UPDATE score SET isClaimed=0 WHERE isClaimed=1').run();
-		console.log('Daily Rewards are ready!');
+		db.prepare('UPDATE scores SET isClaimed = 0;').run();
+		db.prepare('UPDATE scores SET rollTimes = 0;').run();
 	});
 }
 
-module.exports = { initializeDatabase, getDatabase, setDatabase, resetDaily };
+function setUserData(authId, guildId) {
+	data = {
+		id: `${guildId}-${authId}`,
+		user: authId,
+		guild: guildId,
+		points: 0,
+		level: 1,
+		coins: 0,
+		isClaimed: 0,
+		rollTimes: 0
+	};
+	return data;
+}
+
+module.exports = {
+	initializeDatabase,
+	getDatabase,
+	setDatabase,
+	resetDaily,
+	setUserData
+};
