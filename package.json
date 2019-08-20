@@ -18,9 +18,11 @@
 		"firebase": "^6.3.5",
 		"firebase-admin": "^8.3.0",
 		"googleapis": "^39.2.0",
+		"mysql": "github:mysqljs/mysql",
 		"node-gyp": "^5.0.3",
 		"node-opus": "^0.3.2",
 		"node-schedule": "^1.3.2",
+		"pg": "^7.12.1",
 		"simple-youtube-api": "^5.2.1",
 		"sqlite": "^3.0.3",
 		"ytdl-core": "^0.29.5"

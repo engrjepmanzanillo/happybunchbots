@@ -16,7 +16,7 @@ module.exports = class CoinCommand extends Command {
 	}
 
 	run(message, args) {
-		const { getDatabase, setDatabase, setUserData } = require('../../database/db');
+		const { getDatabase, setDatabase, setUserData } = require('../../database/postgres');
 		const channel = message.guild.channels.find((ch) => ch.name === 'games-and-fun');
 		if (!channel) return;
 		if (message.channel.name !== 'games-and-fun') {

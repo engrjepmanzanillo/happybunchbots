@@ -28,7 +28,7 @@ module.exports = class BetCommand extends Command {
 	}
 
 	run(message, { bet, coinsToBet }) {
-		const { getDatabase, setDatabase, setUserData } = require('../../database/db');
+		const { getDatabase, setDatabase, setUserData } = require('../../database/postgres');
 		let bCoin = getDatabase(message.author.id, message.guild.id);
 		if (!bCoin) {
 			bCoin = setUserData(message.author.id, message.guild.id);

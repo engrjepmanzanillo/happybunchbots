@@ -29,7 +29,7 @@ module.exports = class GiveCommand extends Command {
 	}
 
 	run(message, { user, coinsToGive }) {
-		const { getDatabase, setDatabase, setUserData } = require('../../database/db');
+		const { getDatabase, setDatabase, setUserData } = require('../../database/postgres');
 		if (message.author.id === user.id) {
 			message.delete();
 			message.reply("you can't give to yourself.");

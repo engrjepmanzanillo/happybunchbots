@@ -11,8 +11,7 @@ const server = require('./helper/server');
 server();
 
 // database functions
-const { initializeDatabase, getDatabase, setDatabase, resetDaily, setUserData } = require('./database/db');
-
+const { connectDatabase, getDatabase, setDatabase, setUserData } = require('./database/postgres');
 //node-scheduler
 const sched = require('node-schedule');
 
@@ -42,9 +41,9 @@ client.once('ready', () => {
 	client.user.setActivity('type %help');
 	reminder();
 	console.log('reminder functions loaded.');
-	initializeDatabase();
+	connectDatabase();
 	console.log('database loaded');
-	resetDaily();
+	//resetDaily();
 });
 
 // client on error
@@ -81,7 +80,7 @@ client.on('guildMemberAdd', (member) => {
 client.login(TOKEN);
 
 // auto-reminder functions
-function reminder() {
+const reminder = () => {
 	const guild = client.guilds.get(GUILD);
 	const gwChannel = guild.channels.find((ch) => ch.name === 'guildwar-updates');
 	const channel = guild.channels.find((ch) => ch.name === 'events-reminder');
@@ -146,4 +145,4 @@ function reminder() {
 	sched.scheduleJob('25 14 * * *', () => {
 		channel.send('@everyone! Sky Castle will be open in 5 mins.');
 	});
-}
+};
