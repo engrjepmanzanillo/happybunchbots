@@ -29,7 +29,7 @@ module.exports = class RollCommand extends Command {
 			message.delete();
 			coin.roll_times++;
 			message.reply(
-				`You rolled **${randomNum}**. You just earned ${coinReward} HappyBunch coin(s)!. (Roll attempts: ${coin.roll_times}/10)`
+				`You rolled **${randomNum}**. You just earned ${coinReward} HappyBunch coins!. (Roll attempts: ${coin.roll_times}/10)`
 			);
 			coin.coins = coin.coins + coinReward;
 			coin.points++;

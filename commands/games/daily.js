@@ -21,7 +21,7 @@ module.exports = class DailyCommand extends Command {
 			return;
 		}
 		let coin = await getDatabase(message.author.id, message.guild.id);
-		if (!coin) setDatabase(message.author.id, message.guild.id);
+		if (coin == undefined) setDatabase(message.author.id, message.guild.id);
 		coin = await getDatabase(message.author.id, message.guild.id);
 		if (!args.length && !coin.is_claimed) {
 			coin.coins = coin.coins + 200;

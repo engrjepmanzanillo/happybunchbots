@@ -27,6 +27,8 @@ module.exports = class ProfileCommand extends Command {
 			return;
 		}
 		if (!args.length) {
+			let score = await getDatabase(message.author.id, message.guild.id);
+			if (score == undefined) setDatabase(message.author.id, message.guild.id);
 			score = await getDatabase(message.author.id, message.guild.id);
 			const basePoints = Math.floor(Math.pow((score.level + 1) / 0.25, 2));
 			message.delete();
