@@ -11,27 +11,39 @@ const server = require('./helper/server');
 server();
 
 // database functions
-const { connectDatabase, getDatabase, setDatabase, setUserData } = require('./database/postgres');
+const { connectDatabase, getDatabase, setDatabase, setUserData, updateDatabase } = require('./database/postgres');
 //node-scheduler
 const sched = require('node-schedule');
 
 //initiating client
 const client = new CommandoClient({
-	commandPrefix: '%',
-	owner: '233495043451781120'
+	commandPrefix : '%',
+	owner         : '233495043451781120'
 });
 //register client commands
 client.registry
 	.registerDefaultTypes()
 	.registerGroups([
-		[ 'utils', 'Utilities' ],
-		[ 'games', 'Fun and Games' ],
-		[ 'levels', 'XP System' ],
-		[ 'cookbook', 'Recipe Books' ]
+		[
+			'utils',
+			'Utilities'
+		],
+		[
+			'games',
+			'Fun and Games'
+		],
+		[
+			'levels',
+			'XP System'
+		],
+		[
+			'cookbook',
+			'Recipe Books'
+		]
 	])
 	.registerDefaultGroups()
 	.registerDefaultCommands({
-		help: true
+		help : true
 	})
 	.registerCommandsIn(path.join(__dirname, 'commands'));
 
@@ -42,7 +54,6 @@ client.once('ready', () => {
 	reminder();
 	console.log('reminder functions loaded.');
 	connectDatabase();
-	console.log('database loaded');
 	//resetDaily();
 });
 
@@ -50,12 +61,15 @@ client.once('ready', () => {
 client.on('error', console.error);
 
 // client on messaging
-client.on('message', (message) => {
+client.on('message', async (message) => {
 	if (message.author.bot) return;
 	let score;
 	if (message.guild && message.content.indexOf('%') !== 0) {
-		score = getDatabase(message.author.id, message.guild.id);
-		if (!score) score = setUserData(message.author.id, message.guild.id);
+		const testscore = await getDatabase(message.author.id, message.guild.id);
+		// check if user data exists, if not, create set new user data.
+		if (testscore == undefined) setDatabase(message.author.id, message.guild.id);
+		score = await getDatabase(message.author.id, message.guild.id);
+		// add points per message
 		score.points++;
 		const curLevel = Math.floor(0.25 * Math.sqrt(score.points));
 		if (score.level < curLevel) {
@@ -64,7 +78,8 @@ client.on('message', (message) => {
 				`You've leveled up to level ${curLevel}! Congrats! type \`%profile\` to see your XP Profile!`
 			);
 		}
-		setDatabase(score);
+		// update the database
+		await updateDatabase(score);
 	}
 });
 

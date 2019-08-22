@@ -3,63 +3,82 @@ const { Client } = require('pg');
 const connectionString = process.env.CONNECTION_STRING;
 
 const client = new Client({
-	connectionString: connectionString
+	connectionString : connectionString
 });
 
-const connectDatabase = () => {
-	client.connect((err) => {
-		if (err) throw err;
-		console.log('connected to database...');
-	});
+const connectDatabase = async () => {
+	console.log('Connecting to postgresql database...');
+	await client
+		.connect()
+		.then(console.log('database connected.'))
+		.catch((error) => console.error('connection error', error.stack));
 };
 
-const getDatabase = (authId, guildId) => {
-	const data = client.query('SELECT * FROM scores WHERE "user" = $1 AND guild = $2;', [ authId, guildId ], (err) => {
-		if (err) throw err;
-	});
-	return data;
-};
-
-const setDatabase = (dataObject) => {
-	client.query(
-		'INSERT INTO scores (id, "user", guild, points, level, coins, "isClaimed", "rollTimes") VALUES ($id, $user, $points, $level, $coins, $isClaimed, $rollTimes);',
-		[
-			dataObject.id,
-			dataObject.user,
-			dataObject.guild,
-			dataObject.points,
-			dataObject.level,
-			dataObject.coins,
-			dataObject.isClaimed,
-			dataObject.rollTimes
-		],
-		(err) => {
-			if (err) {
-				console.log(err.stack);
-			}
-		}
-	);
-};
-
-const setUserData = (authId, guildId) => {
-	const userData = [
-		{
-			id: `${guildId}-${authId}`,
-			user: authId,
-			guild: guildId,
-			points: 0,
-			level: 1,
-			coins: 0,
-			isClaimed: false,
-			rollTimes: 0
-		}
+const getDatabase = async (authId, guildId) => {
+	const queryValue = [
+		`${guildId}-${authId}`
 	];
-	return userData;
+	let output = await client
+		.query('SELECT * FROM scores WHERE id=$1;', queryValue)
+		.then((result) => {
+			// if no query result exists, return undefined
+			if (result.rows.length === 0) return undefined;
+			return result.rows[0];
+		})
+		.catch((error) => console.log(error.stack));
+	return await output;
+};
+
+const setDatabase = async (authId, guildId) => {
+	const userData = {
+		id         : `${guildId}-${authId}`,
+		user       : authId,
+		guild      : guildId,
+		points     : 0,
+		level      : 1,
+		coins      : 0,
+		is_claimed : false,
+		roll_times : 0
+	};
+	await client
+		.query(
+			'INSERT INTO scores (id, discord_user, discord_guild, points, level, coins, is_claimed, roll_times) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);',
+			[
+				userData.id,
+				userData.user,
+				userData.guild,
+				userData.points,
+				userData.level,
+				userData.coins,
+				userData.is_claimed,
+				userData.roll_times
+			]
+		)
+		.then(console.log(`user data: ${userData.guild}-${userData.user} recorded.`))
+		.catch((error) => console.error(error.stack));
+};
+
+const updateDatabase = async (dataObject) => {
+	const newValue = [
+		dataObject.points,
+		dataObject.level,
+		dataObject.coins,
+		dataObject.is_claimed,
+		dataObject.roll_times,
+		dataObject.id
+	];
+	await client
+		.query(
+			'UPDATE scores SET points = $1, level = $2, coins = $3, is_claimed = $4, roll_times = $5 WHERE id = $6;',
+			newValue
+		)
+		.then()
+		.catch((error) => console.log(error.stack));
 };
 
 module.exports = {
 	connectDatabase,
 	getDatabase,
 	setDatabase,
-	setUserData
+	updateDatabase
 };
