@@ -17,7 +17,7 @@ module.exports = class ProfileCommand extends Command {
 	}
 
 	async run(message, args) {
-		const { getDatabase } = require('../../database/postgresql');
+		const { getDatabase, setDatabase } = require('../../database/postgresql');
 		let score;
 		const channel = message.guild.channels.find((ch) => ch.name === 'xp-profiles');
 		if (!channel) return;
