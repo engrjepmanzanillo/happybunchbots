@@ -4,19 +4,19 @@ const { RichEmbed } = require('discord.js');
 module.exports = class ProfileCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'profile',
-			group: 'levels',
-			memberName: 'profile',
-			description: 'Returns your current exp points and level profile.',
-			guildOnly: true,
-			throttling: {
-				usages: 1,
-				duration: 60
+			name        : 'profile',
+			group       : 'levels',
+			memberName  : 'profile',
+			description : 'Returns your current exp points and level profile.',
+			guildOnly   : true,
+			throttling  : {
+				usages   : 1,
+				duration : 60
 			}
 		});
 	}
 
-	run(message, args) {
+	async run(message, args) {
 		const { getDatabase } = require('../../database/postgresql');
 		let score;
 		const channel = message.guild.channels.find((ch) => ch.name === 'xp-profiles');
@@ -27,7 +27,7 @@ module.exports = class ProfileCommand extends Command {
 			return;
 		}
 		if (!args.length) {
-			score = getDatabase(message.author.id, message.guild.id);
+			score = await getDatabase(message.author.id, message.guild.id);
 			const basePoints = Math.floor(Math.pow((score.level + 1) / 0.25, 2));
 			message.delete();
 			const embed = new RichEmbed()

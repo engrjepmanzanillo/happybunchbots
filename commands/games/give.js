@@ -3,49 +3,45 @@ const { Command } = require('discord.js-commando');
 module.exports = class GiveCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'give',
-			group: 'games',
-			memberName: 'give',
-			description: 'Give someone coins.',
-			guildOnly: true,
-			throttling: {
-				usages: 1,
-				duration: 30
+			name        : 'give',
+			group       : 'games',
+			memberName  : 'give',
+			description : 'Give someone coins.',
+			guildOnly   : true,
+			throttling  : {
+				usages   : 1,
+				duration : 30
 			},
-			example: [ '%give @poity 500' ],
-			args: [
+			example     : [
+				'%give @poity 500'
+			],
+			args        : [
 				{
-					key: 'user',
-					prompt: 'Which user do you want to give coins?',
-					type: 'user'
+					key    : 'user',
+					prompt : 'Which user do you want to give coins?',
+					type   : 'user'
 				},
 				{
-					key: 'coinsToGive',
-					prompt: 'How much do you want to give?',
-					type: 'integer'
+					key    : 'coinsToGive',
+					prompt : 'How much do you want to give?',
+					type   : 'integer'
 				}
 			]
 		});
 	}
 
-	run(message, { user, coinsToGive }) {
-		const { getDatabase, setDatabase, setUserData } = require('../../database/postgres');
+	async run(message, { user, coinsToGive }) {
+		const { getDatabase, setDatabase, updateDatabase } = require('../../database/postgres');
 		if (message.author.id === user.id) {
 			message.delete();
 			message.reply("you can't give to yourself.");
 		}
-		let rCoin = getDatabase(user.id, message.guild.id);
-		if (!rCoin) {
-			rCoin = setUserData(user.id, message.guild.id);
-			setDatabase(rCoin);
-		}
-		rCoin = getDatabase(user.id, message.guild.id);
-		let gCoin = getDatabase(message.author.id, message.guild.id);
-		if (!gCoin) {
-			gCoin = setUserData(message.author.id, message.guild.id);
-			setDatabase(gCoin);
-		}
-		gCoin = getDatabase(message.author.id, message.guild.id);
+		let rCoin = await getDatabase(message.author.id, message.guild.id);
+		if (rCoin == undefined) setDatabase(message.author.id, message.guild.id);
+		rCoin = await getDatabase(message.author.id, message.guild.id);
+		let gCoin = await getDatabase(message.author.id, message.guild.id);
+		if (gCoin == undefined) setDatabase(message.author.id, message.guild.id);
+		gCoin = await getDatabase(message.author.id, message.guild.id);
 		if (gCoin.coins < coinsToGive) {
 			message.delete();
 			message.reply("sorry, you don't have enough coins to give. To check your coin balance, type `%coins`.");
@@ -53,8 +49,8 @@ module.exports = class GiveCommand extends Command {
 		}
 		gCoin.coins = gCoin.coins - coinsToGive;
 		rCoin.coins = rCoin.coins + coinsToGive;
-		setDatabase(gCoin);
-		setDatabase(rCoin);
+		await updateDatabase(gCoin);
+		await updateDatabase(rCoin);
 		message.delete();
 		message.reply(`you gave **${coinsToGive}** HappyBunch Coins to <@${user.id}>!`);
 	}
