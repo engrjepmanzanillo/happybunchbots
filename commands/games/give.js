@@ -36,9 +36,9 @@ module.exports = class GiveCommand extends Command {
 			message.delete();
 			message.reply("you can't give to yourself.");
 		}
-		let rCoin = await getDatabase(message.author.id, message.guild.id);
-		if (rCoin == undefined) setDatabase(message.author.id, message.guild.id);
-		rCoin = await getDatabase(message.author.id, message.guild.id);
+		let rCoin = await getDatabase(user.id, message.guild.id);
+		if (rCoin == undefined) setDatabase(user.id, message.guild.id);
+		rCoin = await getDatabase(user.id, message.guild.id);
 		let gCoin = await getDatabase(message.author.id, message.guild.id);
 		if (gCoin == undefined) setDatabase(message.author.id, message.guild.id);
 		gCoin = await getDatabase(message.author.id, message.guild.id);

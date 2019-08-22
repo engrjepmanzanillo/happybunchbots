@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { Client } = require('pg');
 const connectionString = process.env.CONNECTION_STRING;
+const sched = require('node-schedule');
 
 const client = new Client({
 	connectionString : connectionString
@@ -54,7 +55,7 @@ const setDatabase = async (authId, guildId) => {
 				userData.roll_times
 			]
 		)
-		.then(console.log(`user data: ${userData.guild}-${userData.user} recorded.`))
+		.then(console.log(`user data: ${userData.guild}-${userData.user} created.`))
 		.catch((error) => console.error(error.stack));
 };
 
@@ -76,9 +77,32 @@ const updateDatabase = async (dataObject) => {
 		.catch((error) => console.log(error.stack));
 };
 
+const sortDatabase = async (category) => {
+	let output = await client
+		.query(`SELECT * FROM scores ORDER BY ${category} DESC LIMIT 10;`)
+		.then((result) => {
+			return result.rows;
+		})
+		.catch((error) => console.log(error.stack));
+	return await output;
+};
+
+const resetDaily = async () => {
+	sched.scheduleJob('0 0 * * *', async () => {
+		await client
+			.query('UPDATE scores SET is_claimed = $1', [
+				false
+			])
+			.then()
+			.catch((error) => console.log(error.stack));
+	});
+};
+
 module.exports = {
 	connectDatabase,
 	getDatabase,
 	setDatabase,
-	updateDatabase
+	updateDatabase,
+	resetDaily,
+	sortDatabase
 };

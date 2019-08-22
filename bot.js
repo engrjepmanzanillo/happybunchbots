@@ -7,11 +7,11 @@ const TOKEN = process.env.TOKEN;
 const GUILD = process.env.GUILD;
 
 // setting up and run server
-const server = require('./helper/server');
+const server = require('./server/server');
 server();
 
 // database functions
-const { connectDatabase, getDatabase, setDatabase, setUserData, updateDatabase } = require('./database/postgres');
+const { connectDatabase, getDatabase, setDatabase, updateDatabase, resetDaily } = require('./database/postgres');
 //node-scheduler
 const sched = require('node-schedule');
 
@@ -54,7 +54,7 @@ client.once('ready', () => {
 	reminder();
 	console.log('reminder functions loaded.');
 	connectDatabase();
-	//resetDaily();
+	resetDaily();
 });
 
 // client on error
