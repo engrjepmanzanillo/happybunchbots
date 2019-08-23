@@ -90,9 +90,7 @@ const sortDatabase = async (category) => {
 const resetDaily = async () => {
 	sched.scheduleJob('0 0 * * *', async () => {
 		await client
-			.query('UPDATE scores SET is_claimed = $1', [
-				false
-			])
+			.query('UPDATE scores SET is_claimed = false, roll_times = 0;')
 			.then()
 			.catch((error) => console.log(error.stack));
 	});
