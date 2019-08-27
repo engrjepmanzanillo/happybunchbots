@@ -6,30 +6,34 @@ const cookbook = require('../../refs/recipe.json');
 module.exports = class CookCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'cook',
-			group: 'cookbook',
-			memberName: 'cook',
-			description: 'Cookbook lookup',
-			example: [ '%cook mashedpotato' ],
-			args: [
+			name        : 'cook',
+			group       : 'cookbook',
+			memberName  : 'cook',
+			description : 'Cookbook lookup',
+			guildOnly   : true,
+			example     : [
+				'%cook mashedpotato'
+			],
+			args        : [
 				{
-					key: 'text',
-					prompt: 'What do you want to cook?',
-					type: 'string'
+					key    : 'recipe',
+					prompt : 'What do you want to cook?',
+					type   : 'string'
 				}
 			]
 		});
 	}
 
-	run(message, args) {
+	run(message, { recipe }) {
 		const channel = message.guild.channels.find((ch) => ch.name === 'kitchen');
 		if (!channel) return;
 		if (message.channel.name !== 'kitchen') {
 			message.delete(0);
 			channel.send(`please cook here <@${message.author.id}>`);
 			return;
+		} else if (message.channel.type === 'dm') {
+			message.author.send("You can't cook here. Sorry.");
 		}
-		const recipe = args.text;
 		const recipeArray = recipe.split(' ');
 		if (recipeArray.length !== 1) {
 			message.reply("It seems that I don't have a recipe for that. Type `%cook list` for the list of recipes");
@@ -38,7 +42,7 @@ module.exports = class CookCommand extends Command {
 		if (recipe === 'list') {
 			this.getList(message);
 		} else {
-			this.getRecipe(message, args);
+			this.getRecipe(message, { recipe });
 		}
 	}
 
@@ -91,8 +95,7 @@ module.exports = class CookCommand extends Command {
 			});
 	}
 
-	getRecipe(message, args) {
-		const recipe = args.text;
+	getRecipe(message, { recipe }) {
 		try {
 			cookbook.filter((it) => it.commandName.includes(recipe));
 		} catch (error) {

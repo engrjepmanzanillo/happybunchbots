@@ -60,13 +60,15 @@ const setDatabase = async (authId, guildId) => {
 };
 
 const updateDatabase = async (dataObject) => {
+	const { id, points, level, coins, is_claimed, roll_times } = dataObject;
+
 	const newValue = [
-		dataObject.points,
-		dataObject.level,
-		dataObject.coins,
-		dataObject.is_claimed,
-		dataObject.roll_times,
-		dataObject.id
+		points,
+		level,
+		coins,
+		is_claimed,
+		roll_times,
+		id
 	];
 	await client
 		.query(
