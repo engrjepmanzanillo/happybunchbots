@@ -19,7 +19,6 @@
 		"effects": "Attack and Defense +120, HP +3600 (SA: Final Damage +1500) BR + 2520",
 		"thumbnailUrl": "https://i.ibb.co/ctKv1td/hb-mashedpotato.jpg",
 		"colorRank": "DARKER_GREY",
-
 		"recipeReq": "N"
 	},
 	{
@@ -31,7 +30,6 @@
 		"effects": "Attack and Defense +130, HP +3900 (SA: Reflect Damage +1500) BR +2640",
 		"thumbnailUrl": "https://i.ibb.co/2PFRJpp/hb-coldmilletsoup.jpg",
 		"colorRank": "DARKER_GREY",
-
 		"recipeReq": "N"
 	},
 	{
@@ -43,7 +41,6 @@
 		"effects": "Attack and Defense +140, HP +4200 (SA: VIT +1.0%) BR +2760",
 		"thumbnailUrl": "https://i.ibb.co/4ZytF1z/hb-fishball.jpg",
 		"colorRank": "DARKER_GREY",
-
 		"recipeReq": "N"
 	},
 	{
@@ -55,7 +52,6 @@
 		"effects": " Attack and Defense +140, HP +4200 (SA: ?) BR +2880",
 		"thumbnailUrl": "https://i.ibb.co/C9qtp8g/hb-floweryfishfillet.jpg",
 		"colorRank": "DARKER_GREY",
-
 		"recipeReq": "Y"
 	},
 	{
@@ -173,7 +169,7 @@
 		"commandName": "muttonstew",
 		"cookbookName": "Mutton Stew with Potatoes",
 		"culinaryLevel": "15",
-		"formula": "",
+		"formula": "Lamb Leg[2x], Tomato[1x], Potato[1x], Carrot[1x]",
 		"effects": "Attack and Defense +320 HP +9600 (SA: Healing +5%, HP +1%, DMGx +1%, Damage from all classes +0-1%) BR + 4920",
 		"thumbnailUrl": "https://i.ibb.co/XS3zdNb/hb-muttonstew.jpg",
 		"colorRank": "0x9803fc",
@@ -184,7 +180,7 @@
 		"commandName": "chickenrice",
 		"cookbookName": "Braised Chicken Rice with Cheese",
 		"culinaryLevel": "15",
-		"formula": "",
+		"formula": "Chicken[2x], Cheese[1x], Onion[1x], Tomato[1x]",
 		"effects": "Attack and Defense +340, HP +10200 (SA: Life Steal Rate +1-2%, Debuff Resistance +0-3%) BR +5160",
 		"thumbnailUrl": "https://i.ibb.co/BgYHBDC/hb-chickenrice.jpg",
 		"colorRank": "0x9803fc",

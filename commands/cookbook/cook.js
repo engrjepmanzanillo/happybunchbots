@@ -6,16 +6,19 @@ const cookbook = require('../../refs/recipe.json');
 module.exports = class CookCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'cook',
-			group: 'cookbook',
-			memberName: 'cook',
-			description: 'Cookbook lookup',
-			example: [ '%cook mashedpotato' ],
-			args: [
+			name        : 'cook',
+			group       : 'cookbook',
+			memberName  : 'cook',
+			description : 'Cookbook lookup',
+			guildOnly   : true,
+			example     : [
+				'%cook mashedpotato'
+			],
+			args        : [
 				{
-					key: 'text',
-					prompt: 'What do you want to cook?',
-					type: 'string'
+					key    : 'text',
+					prompt : 'What do you want to cook?',
+					type   : 'string'
 				}
 			]
 		});
@@ -28,6 +31,8 @@ module.exports = class CookCommand extends Command {
 			message.delete(0);
 			channel.send(`please cook here <@${message.author.id}>`);
 			return;
+		} else if (message.channel.type === 'dm') {
+			message.author.send("You can't cook here. Sorry.");
 		}
 		const recipe = args.text;
 		const recipeArray = recipe.split(' ');
