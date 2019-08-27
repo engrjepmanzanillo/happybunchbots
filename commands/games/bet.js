@@ -14,7 +14,7 @@ module.exports = class BetCommand extends Command {
 					prompt   : 'Which one do you want to place your bet?',
 					type     : 'string',
 					validate : (text) => {
-						if (text === 'odd' || text === 'even') return true;
+						if (text.toLowerCase() === 'odd' || text.toLowerCase() === 'even') return true;
 						return 'Please bet to odd or even.';
 					}
 				},
@@ -42,14 +42,17 @@ module.exports = class BetCommand extends Command {
 		let oddEven = randomNum % 2 === 0 ? 'even' : 'odd';
 		let prize = coinsToBet * 2;
 		message.delete();
-		if (bet === oddEven) {
+		let betLowerCase = bet.toLowerCase();
+		if (betLowerCase === oddEven) {
 			message.reply(
-				`you bet **${bet}** and system drawed **${oddEven}**! You won **${prize}** HappyBunch Coins! Congrats!`
+				`you bet **${betLowerCase}** and system drawed **${oddEven}**! You won **${prize}** HappyBunch Coins! Congrats!`
 			);
 			bCoin.coins = bCoin.coins + coinsToBet;
 			await updateDatabase(bCoin);
 		} else {
-			message.reply(`you bet on **${bet}** and system drawed **${oddEven}**! Sorry, you lose. :frowning2:`);
+			message.reply(
+				`you bet on **${betLowerCase}** and system drawed **${oddEven}**! Sorry, you lose. :frowning2:`
+			);
 			bCoin.coins = bCoin.coins - coinsToBet;
 			await updateDatabase(bCoin);
 		}
